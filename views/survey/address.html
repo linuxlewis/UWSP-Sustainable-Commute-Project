@@ -1,0 +1,16 @@
+{{extend 'layout_new.html'}}
+{{block content}}
+<script type="text/javascript">
+$("#tran_slider").slider({ max: 14,range:true });
+</script>
+<div style="text-align:center;">
+<h1>Address and <span class="highlight">Transportation</span></h1>
+<div class="divider"></div>
+   <div class="sevencol" style="margin:0 12em 0 12em;">
+    {{=form}}
+    {{=form2}}
+    <div class="divider"></div>
+        {{=slider_form}}
+    </div>
+</div>
+{{end}}

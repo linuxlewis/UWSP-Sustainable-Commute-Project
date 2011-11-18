@@ -1,0 +1,188 @@
+{{extend 'layout_new.html'}}
+{{block content}}
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="http://code.google.com/apis/gears/gears_init.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://geo-location-javascript.googlecode.com/svn/trunk/js/geo.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="js/map_widget.js" type="text/javascript" charset="utf-8"></script>-->
+    <script type="text/javascript">
+    //kmls
+//0 late night east 1 late night west 2 crossroads
+var map;
+var currentLayer;
+var kmlLayer;
+
+var currentMarker;
+
+$('document').ready(function(){
+    initialize_map();
+    initialize();
+});
+function initialize(){
+    $("#address_form").hide();
+    $("#reset_btn").hide(); 
+    if(geo_position_js.init())
+    {
+        document.getElementById('current').innerHTML="Receiving Location...";
+        geo_position_js.getCurrentPosition(show_position,function(){document.getElementById('current').innerHTML="Location Denied";
+        $("#address_form").show();},{enableHighAccuracy:true});
+        $("#reset_btn").hide();
+    }
+    else
+    {
+        document.getElementById('current').innerHTML="GPS Unavailable";
+        $("#address_form").show();  
+        $("#reset_btn").hide();
+    }
+}
+function initialize_map(){
+    var myOptions = {
+          zoom: 4,
+          mapTypeControl: true,
+          mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
+          navigationControl: true,
+          navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+          mapTypeId: google.maps.MapTypeId.ROADMAP      
+        }   
+    map = new google.maps.Map(document.getElementById("g_map"), myOptions);
+}
+function show_kml(id){
+    if(id < 10){
+        url = "http://uwspcommute.appspot.com/uwspcommute/static/kml/route_"+id+".kml";
+    }
+    else{
+        url = "http://uwspcommute.appspot.com/uwspcommute/static/kml/route_"+id+".kmz";
+    }
+    clearRoute();
+    kmlLayer = new google.maps.KmlLayer(url, { map: map });
+    currentLayer = kmlLayer;
+}
+function clearRoute(){
+    if (currentLayer != null){
+        currentLayer.setMap(null);
+    }
+}
+function clearMarker(){
+    if(currentMarker != null){
+        currentMarker.setMap(null);
+    }
+}
+function refreshRoute(e){
+    //ie handling.
+    if(!e.target){
+        show_kml(window.event.srcElement.value);
+    }
+    else{
+        show_kml(event.target.value);
+    }
+}
+function show_address(){
+    $("#current").text("Receiving Location...");
+    var address = $("#address_input").val();
+    geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            clearMarker();
+            $("#current").text("Location Found!");
+            $("#address_form").hide();
+            $("#reset_btn").show(); 
+            map.setCenter(results[0].geometry.location);
+            map.setZoom(14);
+            
+            var infowindow = new google.maps.InfoWindow({
+            content: "<strong>You are here.</strong>"
+            });
+        
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            title:"You are here"
+        });
+        currentMarker = marker;
+        
+        google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+        });
+      } else {
+       $("#current").text("Geocode was not successful for the following reason: " + status);
+      }
+    });
+}
+function show_position(p)
+{
+    document.getElementById('current').innerHTML="Location Found";
+    $("#reset_btn").show(); 
+    
+    var pos=new google.maps.LatLng(p.coords.latitude,p.coords.longitude);
+    map.setCenter(pos);
+    map.setZoom(14);
+
+    var marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        title:"You are here"
+    });
+    currentMarker = marker;
+    
+    var infowindow = new google.maps.InfoWindow({
+        content: "<strong>You are here.</strong>"
+    });
+    
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+    
+} 
+function reset(){
+    $("#reset_btn").hide();
+    $("#address_form").show();  
+}  
+    </script>
+    <h2>Stevens Point Bus Route Finder</h2>
+<div id="container">
+        <div id="left_column">
+            <div id="g_map">
+            </div>
+            <div id="g_footer">
+                <p style="text-align:center">Routes provided by <a href="http://stevenspoint.com/index.aspx?NID=506" title="Stevens Point Transit" target="_blank">Stevens Point Transit</a></p>
+            </div>
+        </div>
+        <div id="right_column">
+         <h4><div id="current"></h4>
+            <input id="reset_btn" type="button" value="reset" onclick="reset()" style="float:right;"/>
+            <form id="address_form" style="visibilty:hidden; width:inherit;" onkeydown="if(event.keyCode == 13){show_address()}" onsubmit="return false;">
+                <p style="padding:0;margin:0;text-indent:0;text-align:left;">Please enter address(City, State, Zip):</p>
+                <input id="address_input" type="text" name="address" style="margin:0 5px 0 0;width:200px"/><input type="button" name="searched" value="Search" onclick="show_address()"/>
+            </form>
+            <div id="g_user">
+                <form style="padding:0;">
+                    <h4>Select a bus route</h4>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="2" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">East Side/Crossroads</a>
+                        <br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="3" />
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">North Point</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="4" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">Rice/Dixon</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="5" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">Whiting/Westside</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="6" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">Campus - East Side</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="7" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">Campus - Downtown</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="8" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">Campus - Evergreen</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="9" />
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">Campus - Doolittle Dr.</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="0" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=213" title="Stevens Point Bus Routes" target="_blank">Late Night East</a><br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="1" /> 
+                        <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=213" title="Stevens Point Bus Routes" target="_blank">Late Night North</a><br /></div>
+                    <!--<div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="10" /> KMZ test 1<br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="11" /> KMZ test 2<br /></div>
+                    <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="12" /> KMZ test 3<br /></div>-->
+                </form>
+            </div>
+            </div>
+         </div>
+</div>
+{{end}}

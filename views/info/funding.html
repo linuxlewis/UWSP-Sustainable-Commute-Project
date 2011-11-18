@@ -1,0 +1,7 @@
+{{extend 'layout_new.html'}}
+{{block content}}
+<h1>Funding</h1>
+<ul>
+{{for item in Funding:}}<li>{{=A(item,_href=Funding[item])}}</li>{{pass}}
+</ul>
+{{end}}

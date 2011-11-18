@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="Evergreen_Dissolve" xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+	<name>Evergreen_Dissolve</name>
+	<Snippet maxLines="0"></Snippet>
+	<Style id="LineStyle00">
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<LineStyle>
+			<color>bf8a0030</color>
+			<width>4</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>00000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	<Style id="LineStyle000">
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<LineStyle>
+			<color>ff8a0a02</color>
+			<width>4</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>00000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	<Style id="LineStyle001">
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<LineStyle>
+			<color>ff8a0a02</color>
+			<width>4</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>00000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="LineStyle002">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#LineStyle000</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#LineStyle001</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Folder id="FeatureLayer0">
+		<name>Evergreen_Dissolve</name>
+		<Snippet maxLines="0"></Snippet>
+		<Placemark id="ID_00000">
+			<name>0</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+<head>
+
+<META http-equiv="Content-Type" content="text/html">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+</head>
+
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100;border-spacing:0px; padding:3px 3px 3px 3px">
+
+<tr>
+
+<td>FID</td>
+
+<td>0</td>
+
+</tr>
+
+<tr bgcolor="#D4E4F3">
+
+<td>Id</td>
+
+<td>0</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+
+</html>]]></description>
+			<styleUrl>#LineStyle002</styleUrl>
+			<MultiGeometry>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>
+						-89.57762700000001,44.528817,0 -89.577652,44.531379,0 -89.577652,44.531446,0 -89.577692,44.532886,0 -89.57769999999999,44.533865,0 -89.57769399999999,44.535462,0 -89.577665,44.536094,0 -89.577662,44.536165,0 -89.57766100000001,44.536236,0 -89.577662,44.536307,0 -89.577664,44.536378,0 -89.577669,44.536449,0 -89.577674,44.53652,0 -89.577682,44.536591,0 -89.577691,44.536661,0 -89.577703,44.536732,0 -89.577715,44.536802,0 -89.57773,44.536872,0 -89.577746,44.536942,0 -89.577764,44.537012,0 -89.57778399999999,44.537082,0 -89.577805,44.537151,0 -89.577828,44.53722,0 -89.577853,44.537289,0 -89.577879,44.537357,0 -89.577907,44.537425,0 -89.57792999999999,44.5375,0 -89.577968,44.537596,0 -89.577997,44.537678,0 -89.578025,44.537759,0 -89.578051,44.537842,0 -89.578075,44.537924,0 -89.578096,44.538007,0 -89.57811599999999,44.53809,0 -89.57813400000001,44.538173,0 -89.57814999999999,44.538257,0 -89.578163,44.538341,0 -89.578175,44.538425,0 -89.57818399999999,44.538509,0 -89.578192,44.538593,0 -89.578186,44.539173,0 -89.578202,44.541133,0 -89.58084599999999,44.54108,0 -89.583398,44.541071,0 -89.584183,44.541074,0 -89.58573,44.541101,0 -89.585734,44.540579,0 -89.58574299999999,44.539341,0 -89.58574299999999,44.53819,0 -89.58573,44.536212,0 -89.585728,44.536262,0 -89.585733,44.53468,0 -89.585717,44.533851,0 -89.585718,44.533282,0 -89.585719,44.532426,0 -89.58572100000001,44.5316,0 -89.58573199999999,44.530576,0 -89.585731,44.52969,0 -89.58574400000001,44.528791,0 -89.58427399999999,44.52881,0 -89.58305,44.528811,0 -89.58174200000001,44.528803,0 -89.579841,44.52881,0 -89.578746,44.528813,0 -89.57762700000001,44.528817,0 
+					</coordinates>
+				</LineString>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>
+						-89.57762700000001,44.528817,0 -89.57475599999999,44.528824,0 -89.571896,44.528829,0 
+					</coordinates>
+				</LineString>
+			</MultiGeometry>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>

@@ -1,0 +1,10 @@
+*.log
+*.sql
+*.sqlite
+*.pyc
+db.py
+*.kmz
+*.bak
+databases
+sessions
+errors

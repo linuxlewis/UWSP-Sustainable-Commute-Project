@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <script src="{{=URL('static','js/modernizr-1.7.min.js')}}"></script>
+    <script src="{{=URL('static','js/jquery-1.6.2.min.js')}}"></script>
+    <script src="{{=URL('static','js/jquery-ui-1.8.16.custom.min.js')}}"></script>
+    <script src="{{=URL('static','js/lectric.js')}}"></script>
+    
+    {{#------ include web2py specific js code (jquery, calendar, form stuff) ------}}
+    {{include 'web2py_ajax.html'}}
+
+    <!-- Google Analytics async http://mathiasbynens.be/notes/async-analytics-snippet -->
+    <script>var _gaq=[['_setAccount','UA-25924934-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+
+    <title>UWSP SCP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <!--[if lte IE 9]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" /><![endif]-->
+    <link rel="stylesheet" href="{{=URL('static','css/1140.css')}}" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{=URL('static','css/styles.css')}}" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{=URL('static','fonts/fonts.css')}}" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{{=URL('static','nivo/nivo-slider.css')}}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{{=URL('static','css/south-street/jquery-ui-1.8.16.custom.css')}}" type="text/css" media="screen"/>
+
+    <link rel="stylesheet" href="{{=URL('static', 'css/lectric.css')}}" type="text/css" media="screen" />
+    <script type="text/javascript" src="{{=URL('static','js/css3-mediaqueries.js')}}"></script>    
+
+    <script type="text/javascript" src="{{=URL('static','js/jquery.nivo.slider.pack.js')}}"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+    $("#nav-one li").hover(
+        function(){ $("ul", this).fadeIn("fast"); }, 
+        function() { } 
+    );
+    if (document.all) {
+        $("#nav-one li").hoverClass ("sfHover");
+    }
+});
+
+$.fn.hoverClass = function(c) {
+    return this.each(function(){
+        $(this).hover( 
+            function() { $(this).addClass(c);  },
+            function() { $(this).removeClass(c); }
+        );
+    });
+};
+    </script>
+
+</head>
+
+<body>
+
+    <div class="container">
+    
+        <div class="row" id="header">
+            <img src="{{=URL('static','images/logo.png')}}" alt="UWSP SCP" />
+        </div>
+            <!-- <a href="#">home</a>
+            <a href="#">about</a>
+            <a href="#">project outcomes</a>
+            <a href="#">commuting survey</a>
+            <a href="#">bus options</a> -->
+        <div id="navlinks">
+            {{=MENU(response.menu,_class='nav')}}
+
+            <!--<ul id="nav-one" class="nav">
+                <li>
+                    <a href="#item1">home</a>
+                </li>
+                <li>
+                    <a href="#item2">about</a>
+                    <ul>
+                        <li><a href="#item2.1"><small>latest news</small></a></li>
+                        <li><a href="#item2.2"><small>people</small></a></li>
+                        <li><a href="#item1.4"><small>funding</small></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#item3">project outcomes</a>
+                    <ul>
+                        <li><a href="#item3.1"><small>graphs and charts</small></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#item4">commuting survey</a>
+                </li>
+                <li>
+                    <a href="#item4">bus options</a>
+                </li>
+            </ul>-->
+        </div>
+        {{include}} 
+        {{block slideshow}}
+ 
+    {{end}}
+    <div class="row" id="content"  >
+    {{if response.flash:}}
+    <div class="flash">
+    <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+       <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+       <strong>Alert:</strong> {{=response.flash}}</p>
+     </div>
+     </div>
+     {{else:}}
+     {{pass}}
+
+    {{block content}}
+    
+    {{end}}
+        
+      </div>
+
+            <div class="row" id="footer">
+            <p id="socialmedia">
+                <img src="{{=URL('static','images/facebook_logo.png')}}" alt="facebook" />
+               <!-- <img src="{{=URL('static','images/twitter.png')}}" alt="twitter" /></p> -->
+
+            <div class="sevencol">
+                <img src="{{=URL('static','images/footer_img.png')}}" alt="footer image"/></div>
+            <div class="fivecol last" id="footerlinkthings">
+                <a href="#">bus</a>
+                <a href="#">carpool</a>
+                <a href="#">walk</a>
+                <a href="#">bike</a>
+            </div>
+        </div>
+    
+    </div>
+
+</body>
+
+</html>

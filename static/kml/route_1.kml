@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="LateNightNorth_Dissolve" xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+	<name>LateNightNorth_Dissolve</name>
+	<Snippet maxLines="0"></Snippet>
+	<Style id="LineStyle00">
+		<LabelStyle>
+			<color>00000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<LineStyle>
+			<color>bfa80084</color>
+			<width>4</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>00000000</color>
+			<outline>0</outline>
+		</PolyStyle>
+	</Style>
+	<Folder id="FeatureLayer0">
+		<name>LateNightNorth_Dissolve</name>
+		<Snippet maxLines="0"></Snippet>
+		<Placemark id="ID_00000">
+			<name>0</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+<head>
+
+<META http-equiv="Content-Type" content="text/html">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+</head>
+
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100;border-collapse:collapse;padding:3px 3px 3px 3px">
+
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100;border-spacing:0px; padding:3px 3px 3px 3px">
+
+<tr>
+
+<td>FID</td>
+
+<td>0</td>
+
+</tr>
+
+<tr bgcolor="#D4E4F3">
+
+<td>Id</td>
+
+<td>0</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+
+</html>]]></description>
+			<styleUrl>#LineStyle00</styleUrl>
+			<MultiGeometry>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>
+						-89.58478100000001,44.523377,0 -89.584463,44.523378,0 -89.58403800000001,44.523379,0 -89.582279,44.523384,0 -89.58038999999999,44.523387,0 -89.58039599999999,44.524258,0 -89.580387,44.524419,0 -89.58038500000001,44.524461,0 -89.580378,44.524501,0 -89.580367,44.524542,0 -89.58035099999999,44.524581,0 -89.580331,44.52462,0 -89.580307,44.524657,0 -89.580277,44.524694,0 -89.58017599999999,44.524807,0 -89.578757,44.52428,0 -89.578763,44.525139,0 -89.578757,44.526219,0 -89.57875300000001,44.527077,0 -89.577612,44.527085,0 -89.575979,44.527085,0 -89.574755,44.527085,0 -89.57348500000001,44.527085,0 -89.573494,44.528827,0 -89.573477,44.530505,0 -89.57348500000001,44.53184,0 -89.573494,44.533904,0 -89.57486,44.533885,0 -89.575053,44.53388,0 -89.57513299999999,44.535464,0 -89.57521699999999,44.537495,0 -89.575238,44.53782,0 -89.57526,44.538148,0 -89.57529,44.538476,0 -89.575328,44.538803,0 -89.575391,44.539241,0 -89.57544300000001,44.539526,0 -89.575502,44.53981,0 -89.575728,44.540689,0 -89.575852,44.541056,0 -89.57592099999999,44.541228,0 -89.578202,44.541133,0 -89.58084599999999,44.54108,0 -89.583398,44.541071,0 -89.584183,44.541074,0 -89.58573,44.541101,0 -89.585734,44.540579,0 -89.58574299999999,44.539341,0 -89.58574299999999,44.53819,0 -89.58573,44.536212,0 -89.585728,44.536262,0 -89.585733,44.53468,0 -89.585717,44.533851,0 -89.585718,44.533282,0 -89.585719,44.532426,0 -89.58572100000001,44.5316,0 -89.58573199999999,44.530576,0 -89.585731,44.52969,0 -89.58574400000001,44.528791,0 -89.58574400000001,44.527934,0 -89.585745,44.527061,0 -89.585762,44.526213,0 -89.585778,44.526033,0 -89.585781,44.525905,0 -89.58580499999999,44.525793,0 -89.58586099999999,44.52567,0 -89.586033,44.525494,0 -89.586083,44.525466,0 -89.586123,44.525437,0 -89.586161,44.525406,0 -89.586198,44.525374,0 -89.586234,44.525342,0 -89.58626700000001,44.525309,0 -89.586299,44.525274,0 -89.58632900000001,44.525239,0 -89.58635700000001,44.525203,0 -89.586384,44.525167,0 -89.586411,44.525093,0 -89.586703,44.524541,0 -89.586748,44.524355,0 -89.58679100000001,44.523414,0 -89.58574900000001,44.523397,0 -89.58478100000001,44.523377,0 
+					</coordinates>
+				</LineString>
+			</MultiGeometry>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>

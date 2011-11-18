@@ -1,0 +1,12 @@
+{{extend 'layout_new.html'}}
+{{block content}}
+<h1>Query User Database</h1>
+{{=FORM("Student Email:",INPUT(_name='q'),INPUT(_type='submit'), _action="", _method='get')}}
+{{for row in result:}}
+<ul><h3>{{=row.first_}} {{=row.last_}}</h3>
+    {{for value in row:}}
+    <li>{{=value}}:{{=row[value]}}</li>
+    {{pass}}
+</ul>
+{{pass}}
+{{end}}
