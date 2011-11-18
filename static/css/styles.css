@@ -150,7 +150,6 @@ body {
 
 #content {
 	margin-bottom:30px;
-	width:1024px;	
 	color:#eee;
 	background:url(../img/content_bg.png) #6d6e71;
 }
@@ -213,6 +212,11 @@ body {
 	margin: 20px;
 	list-style-image:url(../img/homepage_sidebox_li.png);
 	list-style-position: outside;
+}
+
+#homepage_row_stuff {
+    text-align: center;
+    margin-top: 160px;
 }
 
 
@@ -545,6 +549,7 @@ body {
 /***** web2py specific ****/
 .flash{
     cursor:pointer;
+    margin:15px 15px 0 15px;
 }
 .error{
     color:red;

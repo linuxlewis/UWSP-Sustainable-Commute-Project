@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html>
 <head>
     <script src="{{=URL('static','js/modernizr-1.7.min.js')}}"></script>
     <script src="{{=URL('static','js/jquery-1.6.2.min.js')}}"></script>
@@ -18,34 +18,49 @@
     <!--[if lte IE 9]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" /><![endif]-->
     <link rel="stylesheet" href="{{=URL('static','css/1140.css')}}" type="text/css" media="screen"/>
     <link rel="stylesheet" href="{{=URL('static','css/styles.css')}}" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="{{=URL('static','fonts/fonts.css')}}" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="{{=URL('static','nivo/nivo-slider.css')}}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{{=URL('static','css/south-street/jquery-ui-1.8.16.custom.css')}}" type="text/css" media="screen"/>
 
     <link rel="stylesheet" href="{{=URL('static', 'css/lectric.css')}}" type="text/css" media="screen" />
     <script type="text/javascript" src="{{=URL('static','js/css3-mediaqueries.js')}}"></script>    
 
-    <script type="text/javascript" src="{{=URL('static','js/jquery.nivo.slider.pack.js')}}"></script>
     <script type="text/javascript">
-    $(document).ready(function(){
-    $("#nav-one li").hover(
-        function(){ $("ul", this).fadeIn("fast"); }, 
-        function() { } 
-    );
-    if (document.all) {
-        $("#nav-one li").hoverClass ("sfHover");
-    }
-});
+	/**
+* Written by Rob Schmitt, The Web Developer's Blog
+* http://webdeveloper.beforeseven.com/
+*/
 
-$.fn.hoverClass = function(c) {
-    return this.each(function(){
-        $(this).hover( 
-            function() { $(this).addClass(c);  },
-            function() { $(this).removeClass(c); }
-        );
+/**
+* The following variables may be adjusted
+*/
+var active_color = '#000'; // Colour of user provided text
+var inactive_color = '#ccc'; // Colour of default text
+
+/**
+* No need to modify anything below this line
+*/
+
+$(document).ready(function() {
+  $("input.default-value").css("color", inactive_color);
+  var default_values = new Array();
+  $("input.default-value").focus(function() {
+    if (!default_values[this.id]) {
+      default_values[this.id] = this.value;
+    }
+    if (this.value == default_values[this.id]) {
+      this.value = '';
+      this.style.color = active_color;
+    }
+    $(this).blur(function() {
+      if (this.value == '') {
+        this.style.color = inactive_color;
+        this.value = default_values[this.id];
+      }
     });
-};
-    </script>
+  });
+});
+	
+
+	</script>
 
 </head>
 
@@ -56,45 +71,15 @@ $.fn.hoverClass = function(c) {
         <div class="row" id="header">
             <img src="{{=URL('static','images/logo.png')}}" alt="UWSP SCP" />
         </div>
-            <!-- <a href="#">home</a>
-            <a href="#">about</a>
-            <a href="#">project outcomes</a>
-            <a href="#">commuting survey</a>
-            <a href="#">bus options</a> -->
         <div id="navlinks">
             {{=MENU(response.menu,_class='nav')}}
-
-            <!--<ul id="nav-one" class="nav">
-                <li>
-                    <a href="#item1">home</a>
-                </li>
-                <li>
-                    <a href="#item2">about</a>
-                    <ul>
-                        <li><a href="#item2.1"><small>latest news</small></a></li>
-                        <li><a href="#item2.2"><small>people</small></a></li>
-                        <li><a href="#item1.4"><small>funding</small></a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#item3">project outcomes</a>
-                    <ul>
-                        <li><a href="#item3.1"><small>graphs and charts</small></a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#item4">commuting survey</a>
-                </li>
-                <li>
-                    <a href="#item4">bus options</a>
-                </li>
-            </ul>-->
         </div>
+
         {{include}} 
         {{block slideshow}}
  
     {{end}}
-    <div class="row" id="content"  >
+    <div class="row" id="content">
     {{if response.flash:}}
     <div class="flash">
     <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
@@ -116,9 +101,9 @@ $.fn.hoverClass = function(c) {
                 <img src="{{=URL('static','images/facebook_logo.png')}}" alt="facebook" />
                <!-- <img src="{{=URL('static','images/twitter.png')}}" alt="twitter" /></p> -->
 
-            <div class="sevencol">
+            <div class="sixcol">
                 <img src="{{=URL('static','images/footer_img.png')}}" alt="footer image"/></div>
-            <div class="fivecol last" id="footerlinkthings">
+            <div class="fivecol last" id="footerlink">
                 <a href="#">bus</a>
                 <a href="#">carpool</a>
                 <a href="#">walk</a>
@@ -127,6 +112,7 @@ $.fn.hoverClass = function(c) {
         </div>
     
     </div>
+</div>
 
 </body>
 

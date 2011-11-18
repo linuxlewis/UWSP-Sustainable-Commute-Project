@@ -21,15 +21,15 @@ response.meta.copyright = 'Copyright 2011'
 ##########################################
 
 response.menu = [
-    (T('Home'), False, URL('default','index'), []),
-    (T('About'), False,URL('default','index'),[
-        (T('Latest News'),False,URL('info','news'),[]),
-        (T('People'),False,URL('info','people'),[]),
-        (T('Funding'),False,URL('info','funding'),[])]),
-    (T("Project Outcomes"),False,URL('default','index'),[
-        (T('Graphs and Charts'),False,URL('info','gallery'),[])]),        
-    (T("Commuting Survey"),False,URL('survey','index'),[]),
-    (T("Bus Options"),False,URL('map_widget','index'),[])
+    (T('HOME'), False, URL('default','index'), []),
+    (T('ABOUT v'), False,URL('default','index'),[
+        (T('LATEST NEWS'),False,URL('info','news'),[]),
+        (T('PEOPLE'),False,URL('info','people'),[]),
+        (T('FUNDING'),False,URL('info','funding'),[])]),
+    (T("PROJECT OUTCOMES v"),False,URL('default','index'),[
+        (T('GRAPHS AND CHARTS'),False,URL('info','gallery'),[])]),        
+    (T("COMMUTING SURVEY"),False,URL('survey','index'),[]),
+    (T("BUS OPTIONS"),False,URL('map_widget','index'),[])
     ]
 
 ##########################################
