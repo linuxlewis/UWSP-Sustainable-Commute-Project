@@ -9,3 +9,4 @@ databases
 sessions
 errors
 *.swp
+.DS_STORE
