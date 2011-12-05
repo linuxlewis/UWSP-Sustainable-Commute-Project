@@ -94,25 +94,32 @@ $(document).ready(function() {
     
     {{end}}
         
-      </div>
-
-            <div class="row" id="footer">
-            <p id="socialmedia">
-                <img src="{{=URL('static','images/facebook_logo.png')}}" alt="facebook" />
-               <!-- <img src="{{=URL('static','images/twitter.png')}}" alt="twitter" /></p> -->
-
-            <div class="sixcol">
-                <img src="{{=URL('static','images/footer_img.png')}}" alt="footer image"/></div>
-            <div class="fivecol last" id="footerlink">
-                <a href="#">bus</a>
-                <a href="#">carpool</a>
-                <a href="#">walk</a>
-                <a href="#">bike</a>
+ 
+<div class="row" id="footer">
+			<div class="sevencol">
+            <div id="copy">
+            <img src="{{=URL('static','images/footer_img.png')}}" alt="logo"/>UWSP Sustainable Commute Project &copy;
+            
+            	<script language="JavaScript">
+   				 var d=new Date();
+   				 yr=d.getFullYear();
+ 				 if (yr!=2002)
+    			 document.write(""+yr);
+   				 </script>
+            
             </div>
-        </div>
-    
-    </div>
-</div>
+            </div>
+                
+                 
+			<div class="fivecol last" id="footerlink">
+				<a href="#">bus</a>
+				<a href="#">carpool</a>
+				<a href="#">walk</a>
+				<a href="#">bike</a>
+			</div>
+		</div>
+	
+	</div>
 
 </body>
 
