@@ -5,8 +5,8 @@ def index():
     #uwsp form
     form=FORM(DIV(H3('UWSP ID:',_class='hlabel'),
     INPUT(_name='uwspid',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(H3('UWSP Status:',_class='hlabel'),SELECT('Student','Faculty','Staff',_name='uwstatus',_value='Student',_class='surveyinput'),_class='surveyrow'),
-    DIV(H3('Years at UWSP:',_class='hlabel'),INPUT(_name='uwyears',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
+    DIV(LABEL('UWSP Status:',_class='hlabel',_for='uwstatus'),SELECT('Student','Faculty','Staff',_name='uwstatus',_value='Student',_class='surveyinput',_id='uwstatus'),_class='surveyrow'),
+    DIV(LABEL('Years at UWSP:',_class='hlabel',_for='uwyears'),INPUT(_name='uwyears',_class='styledinput surveyinput',_id='uwyears',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(INPUT(_type='submit',_value='start',_class='surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),_formname='form1')
     
     #non uwsp form
@@ -71,7 +71,7 @@ def address():
             response.flash = 'UWSP ID: ' + session.uwspid + ' found!'
             form.vars.addr = result.address
             form.vars.city = result.city
-            #form.vars.state = result.state
+            form.vars.state = result.state
             form.vars.zip = result.zip
         else:
             #query raw data
@@ -132,12 +132,13 @@ def address():
             result.zip = session.zip
             result.first_name = session.fname
             result.last_name = session.lname
+            result.state = session.state
             result.update_record()
                     
         else:
             #insert new record
             db.response_user.insert(address = session.addr, city = session.city,
-                zip = session.zip, first_name = session.fname, last_name = session.lname, email = session.email)
+                zip = session.zip, first_name = session.fname, last_name = session.lname, email = session.email,state=session.state)
             db.commit()
         #if user entered uwspid
         if session.uwspid:
@@ -149,6 +150,7 @@ def address():
                 uwspresult.uwsp_id = session.uwspid
                 uwspresult.uwsp_status = session.uwstatus
                 uwspresult.uwsp_years = session.uwyears
+                uwspresult.update_record()
             else:
                 #insert new record
                 db.uwsp_user.insert(uwsp_id = session.uwspid,uwsp_status = session.uwstatus, uwsp_years = session.uwyears, user = result.id)        
@@ -172,28 +174,31 @@ def route():
         #code for direction api
     form = FORM(
     H2('Is this your route to school?'),
-    P(INPUT(_type='submit',_value='Yes',_name='map_accurate')),
-    P(INPUT(_type='submit',_value='No',_name='map_accurate')))
+    P(INPUT(_type='submit',_value='Yes',_name='map_accurate',_class='styledinput surveyinput')),
+    P(INPUT(_type='submit',_value='No',_name='map_accurate',_class='styledinput surveyinput')))
+    
+    form2 = FORM(
+           H2('Please drag the route to reflect the route you take to school'),
+           INPUT(_type='submit',_value='Confirm',_name='map_confirm',_class='styledinput surveyinput'),
+           INPUT(_type='hidden',_name='route',_id='route'))
     
     if form.accepts(request,session):
        if form.vars.map_accurate == 'Yes':
            del session.setRoute
            del session.viewRoute
            redirect('parking')
-       elif form.vars.map_confirm == 'Confirm':
-           del session.setRoute
-           redirect('parking')
        else:
-           form = FORM(
-           H2('Please drag the route to reflect the route you take to school'),
-           INPUT(_type='submit',_value='Confirm',_name='map_confirm'),
-           INPUT(_type='hidden',_name='route',_id='route'))
            response.flash = 'Please edit and confirm your route'
            del session.viewRoute
            session.setRoute = 1
+           
+    if form2.accepts(request,session):
+        if form.vars.map_confirm == 'Confirm':
+            del session.setRoute
+            redirect('parking')
    
        
-    return dict(kmlroute=kml_route,form=form)
+    return dict(kmlroute=kml_route,form=form,form2=form2)
 
 def parking():
-    return dict()
+    return dict(form=FORM())

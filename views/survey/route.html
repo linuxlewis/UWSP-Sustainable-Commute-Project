@@ -119,8 +119,13 @@ $('document').ready(function(){
     <div id="g_map">
     
     </div>
-    <form id="map_response" method="post" action="{{URL('survey','route')}}">
+    <form id="map_accurate" action="{{=URL('survey','route')}}" method="post">
+    {{if form:}}
     {{=form}}
+    {{else:}}
+    {{=form2}}
+    {{pass}}
     </form>
+
     </div>
    {{end}}

@@ -48,7 +48,8 @@ db.define_table('response_user',
                     Field('email'),
                     Field('address'),
                     Field('city'),
-                    Field('zip'))
+                    Field('zip'),
+                    Field('state'))
 db.define_table('uwsp_user',
                 Field('user',db.response_user),
                 Field('uwsp_id'),
