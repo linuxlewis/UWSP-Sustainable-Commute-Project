@@ -137,7 +137,7 @@ function reset(){
     $("#address_form").show();  
 }  
     </script>
-    <h2>Stevens Point Bus Route Finder</h2>
+    <h1>Stevens Point Bus Route Finder</h1>
 <div id="container">
         <div id="left_column">
             <div id="g_map">
@@ -151,7 +151,7 @@ function reset(){
             <input id="reset_btn" type="button" value="reset" onclick="reset()" style="float:right;"/>
             <form id="address_form" style="visibilty:hidden; width:inherit;" onkeydown="if(event.keyCode == 13){show_address()}" onsubmit="return false;">
                 <p style="padding:0;margin:0;text-indent:0;text-align:left;">Please enter address(City, State, Zip):</p>
-                <input id="address_input" type="text" name="address" style="margin:0 5px 0 0;width:200px"/><input type="button" name="searched" value="Search" onclick="show_address()"/>
+                <input id="address_input" type="text" class="styledinput" name="address" style="margin:0 5px 0 0;width:200px"/><input type="button" name="searched" value="Search" name="styledinput" onclick="show_address()"/>
             </form>
             <div id="g_user">
                 <form style="padding:0;">

@@ -119,13 +119,13 @@ $('document').ready(function(){
     <div id="g_map">
     
     </div>
-    <form id="map_accurate" action="{{=URL('survey','route')}}" method="post">
-    {{if form:}}
-    {{=form}}
-    {{else:}}
+    <!--<form id="map_accurate" action="{{=URL('survey','route')}}" method="post"> -->
+    {{if session.setRoute == 1:}}
     {{=form2}}
+    {{else:}}
+    {{=form}}
     {{pass}}
-    </form>
+    {{=request.vars}}
 
     </div>
    {{end}}

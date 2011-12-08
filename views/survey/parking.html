@@ -90,8 +90,9 @@ function clearRoute(){
 function show_parking(){
     var url = "{{=URL('static','kml/UWSP_parking.kmz')}}";
     var kmlLayer = new google.maps.KmlLayer(url, {map: map});
-    url = "{{=URL('static','kml/off_campus.kmz')}}";
-    kmlLayer = new google.maps.KmlLayer(url, {map: map});
+    alert('ye');
+    //url = "{{=URL('static','kml/off_campus.kmz')}}";
+    //kmlLayer = new google.maps.KmlLayer(url, {map: map});
     
 }
 $('document').ready(function(){

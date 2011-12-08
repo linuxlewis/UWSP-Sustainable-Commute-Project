@@ -1,4 +1,8 @@
 {{extend 'layout_new.html'}}
+{{block head}}
+    <link rel="stylesheet" href="{{=URL('static', 'css/lectric.css')}}" type="text/css" media="screen" />
+    <script src="{{=URL('static','js/lectric.js')}}"></script>
+{{end}}
 {{block slideshow}}
             
             
@@ -18,7 +22,7 @@
 
 
     <script type="text/javascript">
-  $(function() {
+  $(document).ready(function() {
     // Initialize the slider
     var slider = new Lectric();
     slider.init('#slider', {next: '.next', previous: '.previous'});
@@ -38,20 +42,11 @@
     slider.subscribe('start', clearIt);
     slider.subscribe('previousButton', clearIt);
     slider.subscribe('nextButton', clearIt);
+    
   });
   </script>
 			</div>
-        
-        
-        
-        
-			<!-- <a href="#">home</a>
-			<a href="#">about</a>
-			<a href="#">project outcomes</a>
-			<a href="#">commuting survey</a>
-			<a href="#">bus options</a> -->
 	 
-		
 		<div class="row" id="content">
 			<h1>HOW DO YOU GET TO CAMPUS <span class='highlight'>AND</span> WHY DOES IT MATTER?</h1>
 			

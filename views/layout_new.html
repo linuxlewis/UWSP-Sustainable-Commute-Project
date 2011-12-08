@@ -2,10 +2,9 @@
 <html>
 <head>
     <script src="{{=URL('static','js/modernizr-1.7.min.js')}}"></script>
-    <script src="{{=URL('static','js/jquery-1.6.2.min.js')}}"></script>
+    <script src="{{=URL('static','js/jquery-1.7.min.js')}}"></script>
     <script src="{{=URL('static','js/jquery-ui-1.8.16.custom.min.js')}}"></script>
-    <script src="{{=URL('static','js/lectric.js')}}"></script>
-    
+        
     {{#------ include web2py specific js code (jquery, calendar, form stuff) ------}}
     {{include 'web2py_ajax.html'}}
 
@@ -20,8 +19,10 @@
     <link rel="stylesheet" href="{{=URL('static','css/styles.css')}}" type="text/css" media="screen"/>
     <link rel="stylesheet" href="{{=URL('static','css/south-street/jquery-ui-1.8.16.custom.css')}}" type="text/css" media="screen"/>
 
-    <link rel="stylesheet" href="{{=URL('static', 'css/lectric.css')}}" type="text/css" media="screen" />
     <script type="text/javascript" src="{{=URL('static','js/css3-mediaqueries.js')}}"></script>    
+
+    {{block head}}
+    {{end}}
 
     <script type="text/javascript">
  /* Written by Rob Schmitt, The Web Developer's Blog
@@ -68,8 +69,8 @@ $(document).ready(function() {
         <div class="row" id="header">
             <img src="{{=URL('static','images/logo.png')}}" alt="UWSP SCP" />
         </div>
-        <div id="navlinks">
-            {{=MENU(response.menu,_class='nav')}}
+        <div id="navlinks" class="row">
+            {{=MENU(response.menu,_id='nav')}}
         </div>
 
         {{include}} 

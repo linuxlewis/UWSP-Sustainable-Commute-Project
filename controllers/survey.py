@@ -162,39 +162,55 @@ def route():
 #route based on session data
 #query for user route
 #return route path
+    #if user is a uwspuser
     if session.isUwspUser == 1:
-        emailQuery = session.uwspid + '@uwsp.edu'
-        result = db(db.user_data_raw.email==emailQuery).select()
+        #set url for KML
         static_route = 'kml/2010/' + session.uwspid +'.kmz'
         kml_route = URL('static',static_route)
         session.viewRoute = 1
+        session.setRoute = 0
     else:
+        #set varibles for generated route
         kml_route = '1'
         session.viewRoute = 0
-        #code for direction api
+        session.setRoute = 0
+
+    #create confirmation form
     form = FORM(
-    H2('Is this your route to school?'),
-    P(INPUT(_type='submit',_value='Yes',_name='map_accurate',_class='styledinput surveyinput')),
-    P(INPUT(_type='submit',_value='No',_name='map_accurate',_class='styledinput surveyinput')))
+    H1('Is this your route to school?'),
+    INPUT(_type='submit',_value='Yes',_name='map_accurate',_class='styledinput'),
+    INPUT(_type='submit',_value='No',_name='map_accurate',_class='styledinput'))
     
+    #if confirmation form validates
+    if form.accepts(request):
+        #if the user confirmmed the route
+        if request.vars.map_accurate == 'Yes':
+            #delete uneeded session vars
+            del session.setRoute
+            del session.viewRoute
+            #insert route into response table
+            redirect('parking')
+        else:
+            #set session vars to create new route
+            response.flash = 'Please edit and confirm your route'
+            del session.viewRoute
+            session.setRoute = 1
+
+    #create drag route form
     form2 = FORM(
            H2('Please drag the route to reflect the route you take to school'),
-           INPUT(_type='submit',_value='Confirm',_name='map_confirm',_class='styledinput surveyinput'),
-           INPUT(_type='hidden',_name='route',_id='route'))
-    
-    if form.accepts(request,session):
-       if form.vars.map_accurate == 'Yes':
-           del session.setRoute
-           del session.viewRoute
-           redirect('parking')
-       else:
-           response.flash = 'Please edit and confirm your route'
-           del session.viewRoute
-           session.setRoute = 1
-           
+           INPUT(_type='submit',_value='Confirm',_name='map_confirm',_class='styledinput '),
+           INPUT(_type='hidden',_name='route',_id='route', requires=IS_NOT_EMPTY()))
+       
+    #if the user confirmed their 'new' route
     if form2.accepts(request,session):
-        if form.vars.map_confirm == 'Confirm':
+        if form2.vars.map_confirm == 'Confirm':
+            #delete unneeded session vars
             del session.setRoute
+            #insert new route into response table
+            question = db(db.question.question_text == 'route to school').select().first()
+            response_user = db(db.response_user.email == session.email).select().first()
+            db.response.insert(response_to=question.id,user=response_user.id,answer=form2.vars.route)
             redirect('parking')
    
        

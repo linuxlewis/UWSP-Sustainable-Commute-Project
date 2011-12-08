@@ -59,16 +59,19 @@ db.define_table('uwsp_user',
 db.define_table('category',
                 Field('category_name'))
 #initialize categories
-db.category.update_or_insert(dict(category_name='route'),category_name='route')
-db.category.update_or_insert(dict(category_name='address'),category_name='address')
-db.category.update_or_insert(dict(category_name='bike'),category_name='bike')
-db.category.update_or_insert(dict(category_name='car'),category_name='car')
-db.category.update_or_insert(dict(category_name='bus'),category_name='bus')
+db.category.update_or_insert(category_name='route')
+db.category.update_or_insert(category_name='address')
+db.category.update_or_insert(category_name='bike')
+db.category.update_or_insert(category_name='car')
+db.category.update_or_insert(category_name='bus')
 
 
 db.define_table('question',
                 Field('question_text'),
                 Field('category',db.category))
+
+category = db(db.category.category_name == 'route').select().first()
+db.question.update_or_insert(question_text='route to school',category=category.id)
                 
 db.define_table('response',
                 Field('response_to',db.question),

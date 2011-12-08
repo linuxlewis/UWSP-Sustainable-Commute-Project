@@ -143,6 +143,7 @@ body {
 
 #content {
     margin-bottom:30px;
+    min-height:400px;
     width:1024px;   
     color:#eee;
     background:url(../img/content_bg.png) #6d6e71;
@@ -408,7 +409,7 @@ h3 {
 /* nav */
 #navlinks {
     padding: 0;
-    margin: 0;
+    /*margin: 0;*/
 }
 
 
@@ -442,7 +443,7 @@ h3 {
 
 #nav a {
     font-family: 'COM4tSansMediumRegular';
-    font-size: 1.7em;
+    font-size: 1.6em;
     color: #404042;
     text-decoration: none;
     display: block;
@@ -500,6 +501,7 @@ h3 {
     
 }
 
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     #nav ul {
         top: 50px;/*for chrome and safari*/
@@ -553,7 +555,7 @@ html[xmlns] #nav {
       position: relative;
       width: 1024px;
       margin:0 auto;
-      z-index:1;
+      /*z-index:1;*/
     }
     
 @media screen and (-webkit-min-device-pixel-ratio:0) {
@@ -591,6 +593,8 @@ html[xmlns] #nav {
 /***** web2py specific ****/
 .flash{
     cursor:pointer;
+    width:500px;
+    margin:20px auto 0 auto;
 }
 .error{
     color:red;
@@ -615,6 +619,10 @@ html[xmlns] #nav {
     clear:both;
     margin:10px 0 15px 0;
 }
+
+.inline{
+    display:inline;
+}
 /********* Map Styles ******/
     .route_node{
         margin:0 0 0 0;
@@ -629,7 +637,7 @@ html[xmlns] #nav {
         width:600px; 
         height:400px
     }
-    #g_user[
+    #g_user{
 
     }
     #g_footer{
@@ -637,21 +645,34 @@ html[xmlns] #nav {
     }
     #left_column{
         float:left;
-        width:600px
+        width:600px;
+        margin:0 0 0 50px;
     }
     #right_column{
         float:left;
         width:284px;
         padding:0 0 0 1em;
+        margin:0 0 0 1em;
     }
     #address_form{
         padding:5px 0 15px 0;
     }
     a.routeLink{
-        color:#444;
+        color:#FFF;
         text-decoration:none;
     }
     a.routeLink:hover{
         text-decoration:underline;
         color:#444;
     }
+
+/**** PEOPLE ****/
+
+.people ul{
+    list-style-type:none;
+}
+.people ul li {
+   border-style:solid;
+   border-left:3px #aed136;
+
+}
