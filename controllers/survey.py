@@ -189,6 +189,9 @@ def route():
             del session.setRoute
             del session.viewRoute
             #insert route into response table
+            question = db(db.question.question_text == 'route to school').select().first()
+            response_user = db(db.response_user.email == session.email).select().first()
+            db.response.insert(response_to=question.id,user=response_user.id,answer='true')
             redirect('parking')
         else:
             #set session vars to create new route

@@ -7,7 +7,10 @@
   {{block content}}
   <style>
       h3{
-          margin:0 0 5px 0;
+          text-align:center;
+      }
+      h4{
+        text-align:center;
       }
       ul{
           text-decoration:none;
@@ -20,75 +23,79 @@
           display:inline;
           margin:0 5px 0 5px;
       }
-      img{
+      #lightboxImage{
           border:#666 solid 1px;
       }
       .image_row{
           width:900px;
-          margin:5px 0 15px 0;
+            margin:0 auto;
+            padding:10px 0 0 0;
       }
   </style>
-  <h2>Charts and Graphs</h2>
+  <h1 style="text-align:center">Charts and <span class="highlight">Graphs</span></h1>
+  <div class="divider"></div>
   
   <h3>Desnity and Commuter Distance Maps</h3>
-     <h5>Off Campus student proximity 2010<h5> 
+     <h4>Off Campus student proximity 2010</h4> 
+  <div class="image_row">
   <ul>
       <li><a href="{{=URL('static','images/gallery/2010Map-color.jpg')}}" rel="lightbox"><img src="{{=URL('static','images/gallery/2010Map-color-tb.jpg')}}"/></a></li>
   </ul>
+  </div>
   <h3>Commuter Distance Statistics<h3> 
-     <h5>Four decades of change in five mile commute patterns 1980-2010</h5>
+     <h4>Four decades of change in five mile commute patterns 1980-2010</h4>
      <div class="image_row">
       <ul>
           <li><a href="{{=URL('static','images/gallery/commute_lt5/1980_lt_5_steps.jpg')}}" rel="lightbox[fivemile]">
-              <img src="{{=URL('static','images/gallery/commute_lt5/1980_lt_5_steps-tb.jpg')}}"/></a></li>
+              <img src="{{=URL('static','images/gallery/commute_lt5/1980_lt_5_steps-tb.jpg')}}" class="gallery_img"/></a></li>
           <li><a href="{{=URL('static','images/gallery/commute_lt5/1990_lt_5_steps.jpg')}}" rel="lightbox[fivemile]">
-              <img src="{{=URL('static','images/gallery/commute_lt5/1990_lt_5_steps-tb.jpg')}}"/></a></li>
+              <img src="{{=URL('static','images/gallery/commute_lt5/1990_lt_5_steps-tb.jpg')}}" class="gallery_img"/></a></li>
           <li><a href="{{=URL('static','images/gallery/commute_lt5/2000_lt_5_steps.jpg')}}" rel="lightbox[fivemile]">
-              <img src="{{=URL('static','images/gallery/commute_lt5/2000_lt_5_steps-tb.jpg')}}"/></a></li>
+              <img src="{{=URL('static','images/gallery/commute_lt5/2000_lt_5_steps-tb.jpg')}}" class="gallery_img"/></a></li>
           <li><a href="{{=URL('static','images/gallery/commute_lt5/2010_lt_5_steps.jpg')}}" rel="lightbox[fivemile]">
-              <img src="{{=URL('static','images/gallery/commute_lt5/2010_lt_5_steps-tb.jpg')}}"/></a></li>
+              <img src="{{=URL('static','images/gallery/commute_lt5/2010_lt_5_steps-tb.jpg')}}" class="gallery_img"/></a></li>
           <li><a href="{{=URL('static','images/gallery/commute_lt5/1980_2010_lt_5_cumul.jpg')}}" rel="lightbox[fivemile]">
-              <img src="{{=URL('static','images/gallery/commute_lt5/1980_2010_lt_5_cumul-tb.jpg')}}"/></a></li>
+              <img src="{{=URL('static','images/gallery/commute_lt5/1980_2010_lt_5_cumul-tb.jpg')}}" class="gallery_img"/></a></li>
       </ul>
       </div>
-     <h5>Four decades of change in forty mile commute patterns 1980-2010</h5>
+     <h4>Four decades of change in forty mile commute patterns 1980-2010</h4>
     <div class="image_row">
      <ul>
          <li><a href="{{=URL('static','images/gallery/commute_lt40/1980_lt_40_steps.jpg')}}" rel="lightbox[fourtymile]">
-             <img src="{{=URL('static','images/gallery/commute_lt40/1980_lt_40_steps-tb.jpg')}}"/></a></li>
+             <img src="{{=URL('static','images/gallery/commute_lt40/1980_lt_40_steps-tb.jpg')}}" class="gallery_img"/></a></li>
          <li><a href="{{=URL('static','images/gallery/commute_lt40/1990_lt_40_steps.jpg')}}" rel="lightbox[fourtymile]">
-             <img src="{{=URL('static','images/gallery/commute_lt40/1990_lt_40_steps-tb.jpg')}}"/></a></li>
+             <img src="{{=URL('static','images/gallery/commute_lt40/1990_lt_40_steps-tb.jpg')}}" class="gallery_img"/></a></li>
          <li><a href="{{=URL('static','images/gallery/commute_lt40/2000_lt_40_steps.jpg')}}" rel="lightbox[fourtymile]">
-             <img src="{{=URL('static','images/gallery/commute_lt40/2000_lt_40_steps-tb.jpg')}}"/></a></li>
+             <img src="{{=URL('static','images/gallery/commute_lt40/2000_lt_40_steps-tb.jpg')}}" class="gallery_img"/></a></li>
          <li><a href="{{=URL('static','images/gallery/commute_lt40/2010_lt_40_steps.jpg')}}" rel="lightbox[fourtymile]">
-             <img src="{{=URL('static','images/gallery/commute_lt40/2010_lt_40_steps-tb.jpg')}}"/></a></li>
+             <img src="{{=URL('static','images/gallery/commute_lt40/2010_lt_40_steps-tb.jpg')}}" class="gallery_img"/></a></li>
           <li><a href="{{=URL('static','images/gallery/commute_lt40/1980_2010_lt_40_cumul.jpg')}}" rel="lightbox[fourtymile]">
-              <img src="{{=URL('static','images/gallery/commute_lt40/1980_2010_lt_40_cumul-tb.jpg')}}"/></a></li>
+              <img src="{{=URL('static','images/gallery/commute_lt40/1980_2010_lt_40_cumul-tb.jpg')}}" class="gallery_img"/></a></li>
      </ul>
      </div>
      <h3>Commuter vehicle efficiency</h3>
-         <h5>Commuter vehicle efficiency</h5>
+         <h4>Commuter vehicle efficiency</h4>
          <div class="image_row">
              <ul>
                <li><a href="{{=URL('static','images/gallery/miles_per_gallon/mpg_cumul.jpg')}}" rel="lightbox[veh]">
-                 <img src="{{=URL('static','images/gallery/miles_per_gallon/mpg_cumul-tb.jpg')}}"/></a></li>
+                 <img src="{{=URL('static','images/gallery/miles_per_gallon/mpg_cumul-tb.jpg')}}" class="gallery_img"/></a></li>
                <li><a href="{{=URL('static','images/gallery/miles_per_gallon/mpg_histo.jpg')}}" rel="lightbox[veh]">
-                 <img src="{{=URL('static','images/gallery/miles_per_gallon/mpg_histo-tb.jpg')}}"/></a></li>  
+                 <img src="{{=URL('static','images/gallery/miles_per_gallon/mpg_histo-tb.jpg')}}" class="gallery_img"/></a></li>  
              </ul>
              
          </div>
      <h3>Road Burden</h3>
-     <h5> Relative intensity of road use by student commuters</h5>
+     <h4> Relative intensity of road use by student commuters</h4>
         <div class="image_row">
         <ul>
             <li><a href="{{=URL('static','images/gallery/road_burden/rb_1980.jpg')}}" rel="lightbox[road]">
-                 <img src="{{=URL('static','images/gallery/road_burden/rb_1980-tb.jpg')}}"/></a></li>
+                 <img src="{{=URL('static','images/gallery/road_burden/rb_1980-tb.jpg')}}" class="gallery_img"/></a></li>
            <li><a href="{{=URL('static','images/gallery/road_burden/rb_1990.jpg')}}" rel="lightbox[road]">
-                 <img src="{{=URL('static','images/gallery/road_burden/rb_1990-tb.jpg')}}"/></a></li>
+                 <img src="{{=URL('static','images/gallery/road_burden/rb_1990-tb.jpg')}}" class="gallery_img"/></a></li>
             <li><a href="{{=URL('static','images/gallery/road_burden/rb_2000.jpg')}}" rel="lightbox[road]">
-                 <img src="{{=URL('static','images/gallery/road_burden/rb_2000-tb.jpg')}}"/></a></li>
+                 <img src="{{=URL('static','images/gallery/road_burden/rb_2000-tb.jpg')}}" class="gallery_img"/></a></li>
            <li><a href="{{=URL('static','images/gallery/road_burden/rb_2010.jpg')}}" rel="lightbox[road]">
-                 <img src="{{=URL('static','images/gallery/road_burden/rb_2010-tb.jpg')}}"/></a></li>                                                  
+                 <img src="{{=URL('static','images/gallery/road_burden/rb_2010-tb.jpg')}}" class="gallery_img"/></a></li>                                                  
         </ul>
         </div>
 {{end}}

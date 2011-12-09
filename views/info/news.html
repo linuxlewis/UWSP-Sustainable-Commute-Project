@@ -28,7 +28,7 @@
         margin:5px 0 1em 0;
     }
     .article_container{
-        margin:2em 0 0 0;
+        margin:2em 2em 0 2em;
     }
 </style>
     <div id="admin bar">
@@ -37,7 +37,8 @@
         {{pass}}
     </div>
     <div id="news">
-    <h1>Latest News</h1>
+    <span style="text-align:center"><h1>Latest <span class="highlight">News</span></h1></span>
+    <div class="divider"></div>
     {{for article in article_list:}}
      <div class="article_container"> 
          <h3> {{response.write(article.title,False)}}</h3>
@@ -52,11 +53,11 @@
     {{pass}}
     </div>
     <hr/>
-    <div id="email_list" style="margin:1em 0 0 0;">
+    <div id="email_list" style="margin:1em 2em 0 2em;">
         <h3>Email List</h3>
         <form style="padding:0;" method="post" action="{{=URL('email','local')}}">
             <p style="text-indent:0; padding:0;">Sign up for our email list for the latest news!</p>
-            <input type="text" name="T1" style="margin-left:0;"/><input type="submit" value="subscribe"/>
+            <input type="text" class="styledinput" name="T1" style="margin-left:0;"/><input type="submit" class="styledinput" value="subscribe"/>
         </form>
     </div>
 {{end}}
