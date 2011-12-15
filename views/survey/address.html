@@ -1,7 +1,9 @@
 {{extend 'layout_new.html'}}
 {{block content}}
 <script type="text/javascript">
-$("#tran_slider").slider({ max: 14,range:true });
+$(document).ready(function(){
+    $("#tran_slider").slider({ max: 14,range:true });
+});
 </script>
 <div style="text-align:center;">
 <h1>Address and <span class="highlight">Transportation</span></h1>
