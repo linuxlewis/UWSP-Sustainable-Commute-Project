@@ -243,6 +243,10 @@ body {
     color: #aed136;
 }
 
+#reset_btn { 	
+	float:right; 
+}
+
 
 h3 {
     font: 1.5em 'COM4tSansMediumRegular';
