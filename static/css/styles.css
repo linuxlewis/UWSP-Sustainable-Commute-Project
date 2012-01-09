@@ -247,6 +247,11 @@ body {
 	float:right; 
 }
 
+#address_input {
+	margin:0 5px 0 0;
+	width:200px;
+}
+
 
 h3 {
     font: 1.5em 'COM4tSansMediumRegular';
