@@ -60,7 +60,13 @@
 				
 				<div id="homepage_sidebar" class="fivecol last">
               
-					<div class="homepage_search"><input type="text" value="Search..." class="styledinput default-value" /><input type="button" class="searchbutton" value=">"/></div>
+					<div class="homepage_search">
+                        <form method="get" id="google_form" action="http://www.google.com/search">
+                        <input name="q" type="text" value="Search..." class="styledinput default-value" />
+                        <input type="hidden" name="sitesearch" value="http://www.uwspcommute.com" />
+                        <input type="button" class="searchbutton" value=">"/>
+                        </form>
+                    </div>
 					
 					<div class="homepage_sidebox">
 						<h3 class="sidebar_highlight">The project outcomes will be relevant to the UWSP's concern for:</h3>
@@ -99,7 +105,9 @@
 					<p class="footerp">Knowledge of our commuting community comes from accumulated individual commute experiences and opinions of how things might be different if we tried to change.</p>
                     
                     <div id="newslettersubmit">
+                    <form method="post" action="{{=URL('email','local')}}">
 					<input type="text" value="Enter your e-email" class="newsletterinput default-value" /><input type="button" class="submitbutton" value="Submit" />
+                    </form>
                     </div>
 				</div>
 				
