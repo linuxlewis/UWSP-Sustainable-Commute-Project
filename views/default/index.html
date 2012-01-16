@@ -60,7 +60,7 @@
 				
 				<div id="homepage_sidebar" class="fivecol last">
               
-					<div class="homepage_search"><input type="text" value="Seach..." class="styledinput default-value" /><input type="button" class="searchbutton" value=">"/></div>
+					<div class="homepage_search"><input type="text" value="Search..." class="styledinput default-value" /><input type="button" class="searchbutton" value=">"/></div>
 					
 					<div class="homepage_sidebox">
 						<h3 class="sidebar_highlight">The project outcomes will be relevant to the UWSP's concern for:</h3>
@@ -99,7 +99,7 @@
 					<p class="footerp">Knowledge of our commuting community comes from accumulated individual commute experiences and opinions of how things might be different if we tried to change.</p>
                     
                     <div id="newslettersubmit">
-					<input type="text" value="Enter your e-email" class="newsletterinput" /><input type="button" class="submitbutton" value="Submit" />
+					<input type="text" value="Enter your e-email" class="newsletterinput default-value" /><input type="button" class="submitbutton" value="Submit" />
                     </div>
 				</div>
 				
@@ -108,12 +108,12 @@
 				<div class="sixcol last" id="links">
 					<h3>LINKS</h3>	
 					<p>
-						<a href="/uwspcommute/default/index">home</a>
-						<a href="/uwspcommute/default/index">project outcomes</a>
-						<a href="/uwspcommute/map_widget/index">bus options</a>
-						<a href="/uwspcommute/default/about">about</a>
-						<a href="/uwspcommute/survey/index">commuting survey</a>
-						<a href="/uwspcommute/default/contact">contact</a>
+						<a href="{{=URL('default','index')}}">home</a>
+						<a href="{{=URL('info','gallery')}}">project outcomes</a>
+						<a href="{{=URL('map_widget','index')}}">bus options</a>
+						<a href="{{=URL('info','news')}}">about</a>
+						<a href="{{=URL('survey','index')}}">commuting survey</a>
+						<a href="{{=URL('info','people')}}">contact</a>
                         
 					</p>
                     

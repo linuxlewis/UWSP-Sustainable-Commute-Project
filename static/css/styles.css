@@ -411,6 +411,7 @@ h3 {
 #navlinks {
     padding: 0;
     margin-bottom:10px;
+    overflow:visible;
 }
 
 
@@ -423,7 +424,8 @@ h3 {
     margin-top:40px;
     z-index:2;
     width:100%;
-    margin-bottom:150px;
+    overflow:visible;
+    margin-bottom:30px;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
@@ -563,7 +565,7 @@ html[xmlns] #nav {
       position: relative;
       width: 1024px;
       margin:0 auto;
-      /*z-index:1;*/
+      z-index:-1;
     }
     
 @media screen and (-webkit-min-device-pixel-ratio:0) {
@@ -676,8 +678,9 @@ html[xmlns] #nav {
 
 /**** PEOPLE ****/
 
-.people ul{
+.people{
     list-style-type:none;
+    margin-bottom:30px;
 }
 .people ul li {
    border-style:solid;

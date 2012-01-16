@@ -1,7 +1,10 @@
 {{extend 'layout_new.html'}}
 {{block content}}
-<h1>Funding</h1>
-<ul>
-{{for item in Funding:}}<li>{{=A(item,_href=Funding[item])}}</li>{{pass}}
+<span style="text-align:center;"><h1>Funding</h1></span>
+<div class="divider"></div>
+<div style="width:400px; margin:0 auto;">
+<ul style="list-style-type:none;">
+{{for item in Funding:}}<li><h3>{{=A(item,_href=Funding[item])}}</h3></li>{{pass}}
 </ul>
 {{end}}
+</div>
