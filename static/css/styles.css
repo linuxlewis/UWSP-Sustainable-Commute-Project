@@ -243,6 +243,15 @@ body {
     color: #aed136;
 }
 
+#reset_btn { 	
+	float:right; 
+}
+
+#address_input {
+	margin:0 5px 0 0;
+	width:200px;
+}
+
 
 h3 {
     font: 1.5em 'COM4tSansMediumRegular';
@@ -410,8 +419,12 @@ h3 {
 /* nav */
 #navlinks {
     padding: 0;
+<<<<<<< HEAD
     margin-bottom:10px;
     overflow:visible;
+=======
+    margin-bottom:-50px;
+>>>>>>> 8f862303488cbc2eded435a111486ac721100e60
 }
 
 

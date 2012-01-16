@@ -137,7 +137,7 @@ function reset(){
     $("#address_form").show();  
 }  
     </script>
-    <h1>Stevens Point Bus Route <span class="highlight">Finder</span></h1>
+    <h1>STEVENS POINT BUS ROUTE <span class="highlight">FINDER</span></h1>
     <div class="divider"></div>
 <div id="container">
         <div id="left_column">
@@ -149,13 +149,13 @@ function reset(){
         </div>
         <div id="right_column">
          <h4><div id="current"></h4>
-            <input id="reset_btn" type="button" value="reset" onclick="reset()" style="float:right;"/>
+            <input id="reset_btn" type="button" value="reset" onclick="reset()"/>
             <form id="address_form" style="visibilty:hidden; width:inherit;" onkeydown="if(event.keyCode == 13){show_address()}" onsubmit="return false;">
                 <p style="padding:0;margin:0;text-indent:0;text-align:left;">Please enter address(City, State, Zip):</p>
-                <input id="address_input" type="text" class="styledinput" name="address" style="margin:0 5px 0 0;width:200px"/><input type="button" name="searched" value="Search" name="styledinput" onclick="show_address()"/>
+                <input id="address_input" type="text" class="styledinput" name="address"/><input type="button" name="searched" value="Search" name="styledinput" onclick="show_address()"/>
             </form>
             <div id="g_user">
-                <form style="padding:0;">
+                <form>
                     <h4>Select a bus route</h4>
                     <div class="route_node"><input type="radio" name="route" onclick="refreshRoute(event)" value="2" /> 
                         <a class="routeLink" href="http://stevenspoint.com/DocumentView.aspx?DID=212" title="Stevens Point Bus Routes" target="_blank">East Side/Crossroads</a>
