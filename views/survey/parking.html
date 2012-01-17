@@ -93,13 +93,14 @@ function removeLot(index){
     }
 }
 function submitLot(){
-    var submitedLots;
+    var submitedLots = '';
     for(var i = 0; i < lots.length; i++){
         if(lots[i] != null){
-            submitedLots += lots[i]+',';
+            submitedLots += lots[i]+'|';
         }
     }
     $("#parking-lots-hidden").val(submitedLots);
+    alert($("#parking-lots-hidden").val());
     $("#parking_form").submit();
 }
 function clearLot(){

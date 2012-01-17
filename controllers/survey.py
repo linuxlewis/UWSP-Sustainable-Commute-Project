@@ -224,7 +224,7 @@ def parking():
     offcampus_path = URL('static', 'kml/off_campus_outline2.kmz')
 
     parking_form = FORM(
-        INPUT(_type='submit',_value='confirm',_class='styledinput',_onsubmit='submitLot();'),
+        INPUT(_type='submit',_value='confirm',_class='styledinput',_onclick='submitLot()'),
         INPUT(_type='hidden',_name='lots',_id='parking-lots-hidden',requires=IS_NOT_EMPTY()),_id='parking_form')
 
     if parking_form.accepts(request):
