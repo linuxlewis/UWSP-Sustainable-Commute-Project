@@ -642,10 +642,10 @@ html[xmlns] #nav {
     clear:both;
     margin:10px 0 15px 0;
 }
-
-.inline{
-    display:inline;
+#parking-location-list{
+    list-style-type:decimal;
 }
+
 /********* Map Styles ******/
     .route_node{
         margin:0 0 0 0;
@@ -702,4 +702,18 @@ html[xmlns] #nav {
 }
 
 /****** GALLERY *******/
+
+
+/***** General *****/
+
+.white{
+    color:white;
+    background-color:white;
+}
+.red{
+    background-color:red;
+}
+.inline{
+    display:inline;
+}
 

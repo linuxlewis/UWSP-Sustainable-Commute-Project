@@ -12,8 +12,8 @@ def index():
     #non uwsp form
     form2 = FORM(
     DIV(H3('First Name:',_class='hlabel'),INPUT(_name='fname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(H3('Last Name:',_class='hlabel'),INPUT(_name='lname',_class='styledinput surveyinput',_requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',_requires=IS_EMAIL()),_class='surveyrow'),
+    DIV(H3('Last Name:',_class='hlabel'),INPUT(_name='lname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
+    DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',requires=IS_EMAIL()),_class='surveyrow'),
     INPUT(_type='submit',_value='start',requires=IS_NOT_EMPTY(),_class='surveyinput'),_formname='form2')
     
     #if uwsp form validates
@@ -94,8 +94,8 @@ def address():
                 response.flash = 'UWSP ID: ' + session.uwspid + ' not found! Fill out additional information.'
                 form2 = FORM(
                 DIV(H3('First Name:',_class='hlabel'),INPUT(_name='fname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-                DIV(H3('Last Name:',_class='hlabel'),INPUT(_name='lname',_class='styledinput surveyinput',_requires=IS_NOT_EMPTY()),_class='surveyrow'),
-                DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',_requires=IS_EMAIL()),_class='surveyrow'),_formname='form2')
+                DIV(H3('Last Name:',_class='hlabel'),INPUT(_name='lname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
+                DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',requires=IS_EMAIL()),_class='surveyrow'),_formname='form2')
                 session.isUwspUser = 0
 
     if slider_form.accepts(request,session,formname='slider_form'):
@@ -220,4 +220,16 @@ def route():
     return dict(kmlroute=kml_route,form=form,form2=form2)
 
 def parking():
-    return dict(form=FORM())
+    parking_lots_path = URL('static', 'kml/lots_outline2.kmz')
+    offcampus_path = URL('static', 'kml/off_campus_outline2.kmz')
+
+    parking_form = FORM(
+        INPUT(_type='submit',_value='confirm',_class='styledinput',_onsubmit='submitLot();'),
+        INPUT(_type='hidden',_name='lots',_id='parking-lots-hidden',requires=IS_NOT_EMPTY()),_id='parking_form')
+
+    if parking_form.accepts(request):
+        parking_lots = request.vars.lots
+    else:
+        response.flash = 'Please select atleast one parking location'
+
+    return dict(parking_form=parking_form, parking_lots_path=parking_lots_path,offcampus_path=offcampus_path)
