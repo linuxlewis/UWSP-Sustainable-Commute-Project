@@ -1,6 +1,4 @@
 def index(): 
-#check session and foward properly
-#session.survey_status (1=completed index(on address),2=completed address(on route)
  
     #uwsp form
     form=FORM(DIV(H3('UWSP ID:',_class='hlabel'),
@@ -32,31 +30,35 @@ def index():
         session.lname = form2.vars.lname
         session.email = form2.vars.email
         session.isUwspUser = 0
+        redirect(URL('address'))
     elif form.errors:
         response.flash = 'Please fix the form errors'
         
     return dict(form=form,form2=form2)
+
 def address():
 
-    #create address form
+    #create address form & transportation slider form
     form=FORM(
     DIV(H3('Address:',_class='hlabel'),INPUT(_name='addr',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(H3('City:',_class='hlabel'),INPUT(_name='city',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(H3('State:',_class='hlabel'),INPUT(_name='state',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(H3('Zip Code:',_class='hlabel'),INPUT(_name='zip',_maxlength='5',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(INPUT(_type='submit',_value='next',_class='surveyinput'),_class='surveyrow'),_formname='address_form')
-    
-    #jquery slider control form for transportation frequency
-    slider_form=FORM(
-    H2('How do you get to school?'),
-    P('Bike:',INPUT(_type='hidden',_name='bike'),
-    DIV(_class='tran_slider')),
-    P('Bus:',INPUT(_type='hidden',_name='bus'),
-    DIV(_class='tran_slider')),
-    P('Car:',INPUT(_type='hidden',_name='car'),
-    DIV(_class='tran_slider')),
-    P('Walk:',INPUT(_type='hidden',_name='walk'),
-    DIV(_class='tran_slider')),_formname='slider_form')  
+    H3('How do you get to UWSP?'),
+    DIV(H3('Bike:',_class='hlabel float-left'),
+    DIV(_class='tran_slider',_id='bike_slider'),
+    INPUT(_type='text',_name='bike',_id='bike',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    DIV(H3('Bus:',_class='hlabel float-left'),
+    DIV(_class='tran_slider',_id='bus_slider'),
+    INPUT(_type='text',_name='bus',_id='bus',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    DIV(H3('Car:',_class='hlabel float-left'),
+    DIV(_class='tran_slider', _id='car_slider'),
+    INPUT(_type='text',_name='car',_id='car',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    DIV(H3('Walk:',_class='hlabel float-left'),
+    DIV(_class='tran_slider', _id='walk_slider'),
+    INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    DIV(INPUT(_type='submit',_value='next',_class='surveyinput'),_class='surveyrow'),
+    _formname='address_form')
     
     #initilize form2
     form2 = FORM()
@@ -73,6 +75,8 @@ def address():
             form.vars.city = result.city
             form.vars.state = result.state
             form.vars.zip = result.zip
+            session.fname = result.first_name
+            session.lname = result.last_name
         else:
             #query raw data
             result = db(db.user_data_raw.email==emailQuery).select() 
@@ -98,13 +102,6 @@ def address():
                 DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',requires=IS_EMAIL()),_class='surveyrow'),_formname='form2')
                 session.isUwspUser = 0
 
-    if slider_form.accepts(request,session,formname='slider_form'):
-        session.bikeDay = slider_form.vars.bike
-        session.busDay = slider_form.vars.bus
-        session.walkDay = slider_form.vars.walk
-        session.carDay = slider_form.vars.car
-        #Save data to databse
-        
     #if additional information form validates
     if form2.accepts(request,session,formname='form2'):
         #save name
@@ -115,12 +112,16 @@ def address():
     elif form.errors:
         response.flash = 'Please fix the form errors'
             
-    #if address form validates
+    #if address & transportation form validates
     if form.accepts(request,session,formname='address_form'):
         session.addr = form.vars.addr
         session.city = form.vars.city
         session.state = form.vars.state
         session.zip = form.vars.zip
+        session.bus = form.vars.bus
+        session.walk = form.vars.walk
+        session.car = form.vars.car
+        session.bike = form.vars.bike
         
         #query for existing user
         result = db(db.response_user.email == session.email).select().first()
@@ -154,9 +155,23 @@ def address():
             else:
                 #insert new record
                 db.uwsp_user.insert(uwsp_id = session.uwspid,uwsp_status = session.uwstatus, uwsp_years = session.uwyears, user = result.id)        
+        result = db(db.response_user.email == session.email).select().first()
+        if result: 
+            #insert transportation into database
+            question = db(db.question.question_text == 'bike-days').select().first()
+            db.response.insert(response_to=question.id,user=result.id,answer=session.bike)
+            
+            question = db(db.question.question_text == 'car-days').select().first()
+            db.response.insert(response_to=question.id,user=result.id,answer=session.car)
+
+            question = db(db.question.question_text == 'walk-days').select().first()
+            db.response.insert(response_to=question.id,user=result.id,answer=session.walk)
+
+            question = db(db.question.question_text == 'bus-days').select().first()
+            db.response.insert(response_to=question.id,user=result.id,answer=session.bus)
         redirect(URL('route'))
      
-    return dict(form=form,slider_form=slider_form,form2=form2)
+    return dict(form=form,form2=form2)
    
 def route():
 #route based on session data
@@ -189,7 +204,7 @@ def route():
             del session.setRoute
             del session.viewRoute
             #insert route into response table
-            question = db(db.question.question_text == 'route to school').select().first()
+            question = db(db.question.question_text == 'route to uwsp').select().first()
             response_user = db(db.response_user.email == session.email).select().first()
             db.response.insert(response_to=question.id,user=response_user.id,answer='true')
             redirect('parking')
@@ -223,13 +238,20 @@ def parking():
     parking_lots_path = URL('static', 'kml/lots_outline2.kmz')
     offcampus_path = URL('static', 'kml/off_campus_outline2.kmz')
 
+    #parking lot form
     parking_form = FORM(
         INPUT(_type='submit',_value='confirm',_class='styledinput',_onclick='submitLot()'),
-        INPUT(_type='hidden',_name='lots',_id='parking-lots-hidden',requires=IS_NOT_EMPTY()),_id='parking_form')
+        INPUT(_type='hidden',_name='lots',_id='parking-lots-hidden',requires=IS_NOT_EMPTY(error_message='Please select atleast one parking lot'))
+        ,_id='parking_form')
 
     if parking_form.accepts(request):
         parking_lots = request.vars.lots
-    else:
+        #insert new parking lot response
+        question = db(db.question.question_text == 'parking lots').select().first()
+        response_user = db(db.response_user.email == session.email).select().first()
+        db.response.insert(response_to=question.id,user=response_user.id,answer=parking_lots)
+    elif parking_form.errors:
         response.flash = 'Please select atleast one parking location'
 
     return dict(parking_form=parking_form, parking_lots_path=parking_lots_path,offcampus_path=offcampus_path)
+

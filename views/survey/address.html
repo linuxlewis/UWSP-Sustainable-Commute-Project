@@ -2,7 +2,38 @@
 {{block content}}
 <script type="text/javascript">
 $(document).ready(function(){
-    $("#tran_slider").slider({ max: 14,range:true });
+    $("#bike_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#bike").val(ui.value);
+		                	}
+    });
+    $("#car_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#car").val(ui.value);
+		                	}
+    });
+    $("#bus_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#bus").val(ui.value);
+		                	}
+    });
+    $("#walk_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#walk").val(ui.value);
+		                	}
+    });
+    $( "#bike" ).val($( "#bike_slider" ).slider( "value" ) );
+    $( "#car" ).val($( "#car_slider" ).slider( "value" ) );
+    $( "#bus" ).val($( "#bus_slider" ).slider( "value" ) );
+    $( "#walk" ).val($( "#walk_slider" ).slider( "value" ) );
 });
 </script>
 <div style="text-align:center;">
@@ -11,8 +42,5 @@ $(document).ready(function(){
    <div class="sevencol" style="margin:0 12em 0 12em;">
     {{=form}}
     {{=form2}}
-    <div class="divider"></div>
-        {{=slider_form}}
-    </div>
 </div>
 {{end}}

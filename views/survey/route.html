@@ -109,7 +109,7 @@ $('document').ready(function(){
         clear:both;
         width:900px; 
         height:400px;
-        margin:3em 6em 0 6em;
+        margin:3em auto;
     }
     </style>
     <div style="text-align:center;">
@@ -121,9 +121,10 @@ $('document').ready(function(){
     <!--<form id="map_accurate" action="{{=URL('survey','route')}}" method="post"> -->
     {{if session.setRoute == 1:}}
     {{=form2}}
+    <div class="divider"></div>
     {{else:}}
     {{=form}}
+    <div class="divider"></div>
     {{pass}}
-    </div>
    {{end}}
-   <div class="divider"></div>
+   </div>

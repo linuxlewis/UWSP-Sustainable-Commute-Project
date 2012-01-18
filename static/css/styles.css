@@ -148,6 +148,7 @@ body {
     color:#eee;
     background:url(../img/content_bg.png) #6d6e71;
     z-index:-1;
+    margin-top:40px;
 }
 
 #content h1 {
@@ -419,12 +420,9 @@ h3 {
 /* nav */
 #navlinks {
     padding: 0;
-<<<<<<< HEAD
     margin-bottom:10px;
     overflow:visible;
-=======
     margin-bottom:-50px;
->>>>>>> 8f862303488cbc2eded435a111486ac721100e60
 }
 
 
@@ -645,6 +643,20 @@ html[xmlns] #nav {
 #parking-location-list{
     list-style-type:decimal;
 }
+.tran_slider{
+    width:350px;
+    margin-top:38px;
+    margin-left:10px;
+    float:left;
+}
+.day-input{
+    width:40px;
+    color:white;
+    margin-top:33px;
+    margin-left:20px;
+    float:left;
+    font-size:1.5em;
+}
 
 /********* Map Styles ******/
     .route_node{
@@ -715,5 +727,8 @@ html[xmlns] #nav {
 }
 .inline{
     display:inline;
+}
+.float-left{
+    float:left;
 }
 

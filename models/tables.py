@@ -60,20 +60,43 @@ db.define_table('category',
                 Field('category_name'))
 #initialize categories
 db.category.update_or_insert(category_name='route')
+db.category.update_or_insert(category_name='parking')
 db.category.update_or_insert(category_name='address')
 db.category.update_or_insert(category_name='bike')
 db.category.update_or_insert(category_name='car')
 db.category.update_or_insert(category_name='bus')
+db.category.update_or_insert(category_name='walk')
 
-
+#inialize questions table
 db.define_table('question',
                 Field('question_text'),
                 Field('category',db.category))
 
+#insert survey question into database
+
+#school route
 category = db(db.category.category_name == 'route').select().first()
-db.question.update_or_insert(question_text='route to school',category=category.id)
-                
+db.question.update_or_insert(question_text='route to uwsp',category=category.id)
+
+#parking locations
+category = db(db.category.category_name == 'parking').select().first()
+db.question.update_or_insert(question_text='parking lots', category=category.id)
+
+#transportation
+category = db(db.category.category_name == 'bike').select().first()
+db.question.update_or_insert(question_text='bike-days',category=category.id)
+
+category = db(db.category.category_name == 'car').select().first()
+db.question.update_or_insert(question_text='car-days',category=category.id)
+
+category = db(db.category.category_name == 'bus').select().first()
+db.question.update_or_insert(question_text='bus-days',category=category.id)
+
+category = db(db.category.category_name == 'walk').select().first()
+db.question.update_or_insert(question_text='walk-days',category=category.id)
+
+#inialize response table
 db.define_table('response',
                 Field('response_to',db.question),
                 Field('user',db.response_user),
-                Field('answer','text'))# coding: utf8
+                Field('answer','text'))
