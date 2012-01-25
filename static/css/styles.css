@@ -422,7 +422,6 @@ h3 {
     padding: 0;
     margin-bottom:10px;
     overflow:visible;
-    margin-bottom:-50px;
 }
 
 
@@ -730,5 +729,8 @@ html[xmlns] #nav {
 }
 .float-left{
     float:left;
+}
+.hidden-div{
+    display:none;
 }
 

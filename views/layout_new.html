@@ -77,7 +77,7 @@ $(document).ready(function() {
         {{block slideshow}}
  
     {{end}}
-    <div class="row" id="content">
+    <div class="row" id="content" style="margin-top:0;">
     {{if response.flash:}}
     <div class="flash">
     <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
@@ -100,7 +100,7 @@ $(document).ready(function() {
 
  
 <div class="row" id="footer">
-            <div class="sevencol">
+            <div class="sixcol">
             <div id="copy">
             <img src="{{=URL('static','images/footer_img.png')}}" alt="logo"/>UWSP Sustainable Commute Project &copy;
             
@@ -115,11 +115,11 @@ $(document).ready(function() {
             </div>
                 
                  
-            <div class="fivecol last" id="footerlink">
-                <a href="#">bus</a>
-                <a href="#">carpool</a>
-                <a href="#">walk</a>
-                <a href="#">bike</a>
+            <div class="sixcol last" id="footerlink">
+                <a href="{{=URL('default','index')}}">home</a>
+                <a href="{{=URL('info','news')}}">about</a>
+                <a href="{{=URL('info','gallery')}}">outcomes</a>
+                <a href="{{=URL('map_widget','index')}}">options</a>
             </div>
         </div>
     

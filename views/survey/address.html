@@ -35,6 +35,11 @@ $(document).ready(function(){
     $( "#bus" ).val($( "#bus_slider" ).slider( "value" ) );
     $( "#walk" ).val($( "#walk_slider" ).slider( "value" ) );
 });
+function dormClick(){
+    $(".top_address_form").toggleClass("hidden-div","2");
+    $("#dorm_form").toggleClass("hidden-div","2");
+
+}
 </script>
 <div style="text-align:center;">
 <h1>Address and <span class="highlight">Transportation</span></h1>

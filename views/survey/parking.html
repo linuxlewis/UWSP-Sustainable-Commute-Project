@@ -53,6 +53,9 @@ function show_parking(){
     clearRoute();
     var url = 'http://uwspcommute.appspot.com{{=parking_lots_path}}';
     currentLayer = new google.maps.KmlLayer(url, {map: map});
+    google.maps.event.addListener(currentLayer, 'click', function(kmlEvent){
+        addLot(kmlEvent.featureData.name);
+    });
 }
 function show_offcampus(){
     clearRoute();
@@ -113,8 +116,8 @@ function clearLot(){
 $('document').ready(function(){
     initialize_map();
     show_address();
-    //show_parking();
-    show_offcampus();
+    show_parking();
+   // show_offcampus();
  });
     </script>
     <style>
