@@ -656,6 +656,29 @@ html[xmlns] #nav {
     float:left;
     font-size:1.5em;
 }
+.minute-input{
+    width:40px;
+    float:left;
+    font-size:2.5em;
+    margin-top:33px;
+    margin-left:20px;
+    color:#312E25;
+}
+.minute-slider{
+
+    width:450px;
+    margin-top:35px;
+}
+.hour-slider{
+    width:450px;
+    margin-top:20px;
+}
+.questions{
+    padding:10px 60px;
+}
+.timeinput{
+    margin-top:36px;
+}
 
 /********* Map Styles ******/
     .route_node{
@@ -729,6 +752,9 @@ html[xmlns] #nav {
 }
 .float-left{
     float:left;
+}
+.float-right{
+    float:right;
 }
 .hidden-div{
     display:none;

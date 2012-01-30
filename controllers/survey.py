@@ -83,6 +83,7 @@ def address():
             form.vars.zip = result.zip
             session.fname = result.first_name
             session.lname = result.last_name
+            session.email = result.email
         else:
             #query raw data
             result = db(db.user_data_raw.email==emailQuery).select() 
@@ -166,16 +167,16 @@ def address():
         if result: 
             #insert transportation into database
             question = db(db.question.question_text == 'bike-days').select().first()
-            db.response.insert(response_to=question.id,user=result.id,answer=session.bike)
+            db.response.update_or_insert(response_to=question.id,user=result.id,answer=session.bike)
             
             question = db(db.question.question_text == 'car-days').select().first()
-            db.response.insert(response_to=question.id,user=result.id,answer=session.car)
+            db.response.update_or_insert(response_to=question.id,user=result.id,answer=session.car)
 
             question = db(db.question.question_text == 'walk-days').select().first()
-            db.response.insert(response_to=question.id,user=result.id,answer=session.walk)
+            db.response.update_or_insert(response_to=question.id,user=result.id,answer=session.walk)
 
             question = db(db.question.question_text == 'bus-days').select().first()
-            db.response.insert(response_to=question.id,user=result.id,answer=session.bus)
+            db.response.update_or_insert(response_to=question.id,user=result.id,answer=session.bus)
         redirect(URL('route'))
      
     return dict(form=form,form2=form2)
@@ -213,7 +214,7 @@ def route():
             #insert route into response table
             question = db(db.question.question_text == 'route to uwsp').select().first()
             response_user = db(db.response_user.email == session.email).select().first()
-            db.response.insert(response_to=question.id,user=response_user.id,answer='true')
+            db.response.update_or_insert(response_to=question.id,user=response_user.id,answer='true')
             redirect('parking')
         else:
             #set session vars to create new route
@@ -235,7 +236,7 @@ def route():
             #insert new route into response table
             question = db(db.question.question_text == 'route to uwsp').select().first()
             response_user = db(db.response_user.email == session.email).select().first()
-            db.response.insert(response_to=question.id,user=response_user.id,answer=form2.vars.route)
+            db.response.update_or_insert(response_to=question.id,user=response_user.id,answer=form2.vars.route)
             redirect('parking')
    
        
@@ -264,17 +265,113 @@ def parking():
     return dict(parking_form=parking_form, parking_lots_path=parking_lots_path,offcampus_path=offcampus_path)
 
 def analysis():
-    #general questions
+    tab_container = DIV(_id='tabs')
+    tab_nav = UL()
+    tab_container.append(tab_nav)
     form = FORM()
 
+    #general questions
     general_category = db(db.category.category_name=='route').select().first()
-    form.insert(-1,H2(general_category.category_name))
-    
-    general_question = db(db.question.category==general_category.id).select()
+    general_question = db((db.question.category==general_category.id) & (db.question.type_id != 0)).select()
+    general_container = DIV(_id=general_category.category_name)
+    tab_nav.append(A("General Analysis",_href="#"+general_category.category_name))
+    general_container.append(DIV(H3("General Route",_class='hlabel'),DIV(_class="divider")))
 
+    question_id_list = []
+
+    #general questions
     for question in general_question:
-        element = DIV(H3(question.question_text),INPUT(_type="text",_name=question.id),_class='surveyrow')
-        form.insert(0,element)
+        element = getQuestion(question) 
+        general_container.append(element)
+        question_id_list.append(question.id)
+    tab_container.append(general_container)
 
-    return dict(form=form)
+    #if user uses car to get to uwsp
+    if session.car != '0':
+
+        car_category = db(db.category.category_name=='car').select().first()
+        tab_nav.append(A("Car Analysis",_href="#"+car_category.category_name))
+
+        car_question = db((db.question.category==car_category.id) & (db.question.type_id != 0)).select()
+
+        car_container = DIV(_id=car_category.category_name)
+        car_container.append(DIV(H3("Car questions",_class='hlabel'),DIV(_class='divider')))
+        for question in car_question:
+            element = getQuestion(question)
+            car_container.append(element)
+            question_id_list.append(question.id)
+        tab_container.append(car_container)
+    #if user uses bike to get to UWSP
+    if session.bike != '0':
+        bike_category = db(db.category.category_name=='bike').select().first()
+        tab_nav.append(A("Bike Analysis",_href="#"+bike_category.category_name))
+        bike_question = db((db.question.category==bike_category.id) & (db.question.type_id != 0)).select()
+        bike_container = DIV(_id=bike_category.category_name)
+        bike_container.append(DIV(H3("Bike questions",_class='hlabel'),DIV(_class='divider')))
+        
+        for question in bike_question:
+            element = getQuestion(question)
+            bike_container.append(element)
+            question_id_list.append(question.id)
+        tab_container.append(bike_container)
+
+    #tab_container.insert(-1,tab_nav)
+    form.append(tab_container)
+
+    #submit button
+    element = INPUT(_type='submit',_value='submit',_class='styledinput')
+    form.append(element)
+
+
+
+    #if form validates
+    if form.accepts(request):
+        response_user = db(db.response_user.email == session.email).select().first()
+        for question_id in question_id_list:
+            answer_var = form.vars[str(question_id)]
+            db.response.insert(response_to=question_id,user=response_user.id,answer=answer_var)
+    elif form.errors:
+        response.flash = 'Please fill out every question'
+
+        
+
+    return dict(form=form,question_id_list=question_id_list,car=session.car)
+
+def final():
+    return dict()
+
+def getQuestion(question):
+        element = ''
+        if question.type_id == '1':
+            element = DIV(H3(question.question_text, _class="float-left"),TEXTAREA(_type='text',_class='styledinput float-left', _name=question.id),_class='surveyrow')
+        elif question.type_id == '2':
+            element = DIV(H3(question.question_text, _class='float-left'),INPUT(_type='text',_class='styledinput float-right', _name=question.id,requires=IS_NOT_EMPTY()),_class='surveyrow')
+        elif question.type_id == '3':
+            element = DIV(H3(question.question_text, _class='float-left'),INPUT(_type='text',_class='styledinput timeinput float-right', _name=question.id,
+                requires=IS_NOT_EMPTY(),_id="time-input-"+str(question.id)),_class='surveyrow')
+        elif question.type_id == '4':
+            element = DIV(H3(question.question_text,_class='float-left'),DIV(_id="minute-slider-"+str(question.id),_class="minute-slider float-left"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('minutes',_class='hlabel'),_class='surveyrow')
+        elif question.type_id == '5':
+            element = DIV(H3(question.question_text,_class='float-left'),DIV(_id="hour-slider-"+str(question.id),_class="hour-slider float-left"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('hours',_class='float-left hlabel'),_class='surveyrow') 
+        elif question.type_id == '6':
+            element = DIV(H3(question.question_text),_class='surveyrow')
+            select = SELECT(_name=question.id,_id=question.id)
+            options = question.answers.split(',')
+            for option in options:
+                select.append(option)
+            element.append(select) 
+        elif question.type_id == '7':
+            element = DIV(H3(question.question_text),DIV(_id="people-slider-"+str(question.id),_class="people-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="day-input"),H3('people',_class='hlabel'),_class='surveyrow') 
+        elif question.type_id == '8':
+            element = DIV(H3(question.question_text),DIV(_id="week-slider-"+str(question.id),_class="week-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="day-input"),H3('day(s)',_class='hlabel'),_class='surveyrow') 
+        elif question.type_id == '9':
+            element = DIV(H3(question.question_text),DIV(_id="month-slider-"+str(question.id),_class="month-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="day-input"),H3('day(s)',_class='hlabel'),_class='surveyrow')  
+ 
+
+        return element
+
+
+    
+
+
 
