@@ -631,6 +631,14 @@ html[xmlns] #nav {
     clear:both;
     min-width:250px;
 }
+select.tabinput{
+    font-size:1.5em;
+    color:#312E25;
+    margin-top:35px;
+    margin-left:30px;
+
+
+}
 .clear{
     clear:both;
 }
@@ -639,11 +647,27 @@ html[xmlns] #nav {
     clear:both;
     margin:10px 0 15px 0;
 }
+.tab-surveyrow{
+    height:150px;
+    clear:both;
+    margin:10px 0 15px 0;
+}
+.tab-centermargin{
+    margin:0 4em 0 4em;
+}
+.tab-inputmargin{
+    margin-top:30px;
+}
+.lastsurveyrow{
+    height:auto;
+    margin:10px 0 15px 0;
+    clear:both;
+}
 #parking-location-list{
     list-style-type:decimal;
 }
 .tran_slider{
-    width:350px;
+    width:500px;
     margin-top:38px;
     margin-left:10px;
     float:left;
@@ -656,22 +680,39 @@ html[xmlns] #nav {
     float:left;
     font-size:1.5em;
 }
-.minute-input{
-    width:40px;
+input.minute-input{
+    width:60px;
     float:left;
-    font-size:2.5em;
-    margin-top:33px;
+    font-size:2em;
+    margin-top:27px;
     margin-left:20px;
     color:#312E25;
 }
 .minute-slider{
 
-    width:450px;
-    margin-top:35px;
+    width:500px;
+    margin-top:40px;
+    margin-left:20px;
 }
 .hour-slider{
-    width:450px;
-    margin-top:20px;
+    width:500px;
+    margin-top:40px;
+    margin-left:20px;
+}
+.people-slider{
+    width:500px;
+    float:left;
+    margin-top:40px;
+}
+.week-slider{
+    width:500px;
+    float:left;
+    margin-top:40px;
+}
+.month-slider{
+    width:500px;
+    float:left;
+    margin-top:40px;
 }
 .questions{
     padding:10px 60px;
@@ -758,5 +799,8 @@ html[xmlns] #nav {
 }
 .hidden-div{
     display:none;
+}
+.center-margin{
+    margin:0 auto;
 }
 

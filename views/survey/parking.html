@@ -62,7 +62,7 @@ function show_offcampus(){
     var url = 'http://uwspcommute.appspot.com{{=offcampus_path}}';
     currentLayer = new google.maps.KmlLayer(url, {map: map});
     google.maps.event.addListener(currentLayer, 'click', function(kmlEvent){
-       addLot(kmlEvent.featureData.name);
+       addOffLot(kmlEvent.featureData.name);
         
     });
 }
@@ -80,12 +80,29 @@ function addLot(name){
     currLot = currLot > 2 ? 0 : currLot;
     refreshLotUI();
 }
+var offLots = [];
+var currOffLot = 0;
+function addOffLot(name){
+    offLots[currOffLot] = name;
+    currOffLot++;
+    currOffLot = currOffLot > 2 ? 0 : currOffLot;
+    refreshOffUI();
+
+}
 function refreshLotUI(){
     $("#parking-location-list").empty();
     for(var i = 0; i < lots.length; i++){
         if(lots[i] != null){
             $("#parking-location-list").append('<li><h4>'+lots[i]+'</h4></li>');
             //' <a href="#" onclick="removeLot('+i+');">remove</a></li>');
+        }
+    }
+}
+function refreshOffUI(){
+    $("#off-location-list").empty();
+    for(var i = 0; i < offLots.length; i++){
+        if(offLots[i] != null){
+            $("#off-location-list").append('<li><h4>'+offLots[i]+'</h4></li>');
         }
     }
 }
@@ -102,8 +119,16 @@ function submitLot(){
             submitedLots += lots[i]+'|';
         }
     }
-    $("#parking-lots-hidden").val(submitedLots);
-    //alert($("#parking-lots-hidden").val());
+    $("#campus-hidden").val(submitedLots);
+
+    var submitOffLots = '';
+    for(var i = 0; i < offLots.length; i++){
+        if(offLots[i] != null){
+            submitOffLots += offLots[i] + '|';
+        }
+    }
+    $("#off-hidden").val(submitOffLots);
+
     $("#parking_form").submit();
 }
 function clearLot(){
@@ -112,6 +137,12 @@ function clearLot(){
         lots[i] = null;
      }
     
+}
+function clearOff(){
+    $("#off-location-list").empty();
+    for(var i = 0; i < offLots.length; i++){
+        offLots[i] = null;
+    }
 }
 $('document').ready(function(){
     initialize_map();
@@ -145,12 +176,21 @@ $('document').ready(function(){
     </div>
     </div>
     <div class="sixcol last">
-    <h3>Parking Locations</h3>
+    <h3>Campus Locations</h3>
 
     <ul id="parking-location-list">
    </ul> 
    <button type="button" class="styledinput" onclick="clearLot();">clear list</button>
-   {{=parking_form}}
+    
+    <h3>Off-Campus Locations</h3>
+    <ul id="off-location-list">
+    </ul>
+    <button type="button" class="styledinput" onclick="clearOff();">clear list</button>
     </div>
+    </div>
+    <div class="row">
+        <div class="twelvecol last">
+            {{=parking_form}}
+        </div>
     </div>
     <div class="divider"></div>
