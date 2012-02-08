@@ -47,6 +47,9 @@ body {
 
 }
 
+h2{
+    font-size:1.7em;
+}
 .styledinput {
     padding-left: 8px;
     height: 31px;
@@ -683,10 +686,10 @@ select.tabinput{
 input.minute-input{
     width:60px;
     float:left;
-    font-size:2em;
+    font-size:1.5em;
     margin-top:27px;
     margin-left:20px;
-    color:#312E25;
+    color:white;
 }
 .minute-slider{
 

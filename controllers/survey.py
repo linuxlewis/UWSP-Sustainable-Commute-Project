@@ -135,6 +135,7 @@ def address():
 
 def modes():
     form = FORM(
+    H2("How many days a week do you use each of these methods for your campus commute?",_class='highlight'),
     DIV(H3('Bike:',_class='hlabel float-left'),
     DIV(_class='tran_slider',_id='bike_slider'),
     INPUT(_type='text',_name='bike',_id='bike',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
@@ -146,8 +147,21 @@ def modes():
     INPUT(_type='text',_name='car',_id='car',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Walk:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='walk_slider'),
-    INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
-    INPUT(_type='submit',_name='next',_value='submit',_class='styledinput'))
+    INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'))
+    
+    general_category = db(db.category.category_name=='route').select().first()
+    general_question = db((db.question.category==general_category.id) & (db.question.type_id != 0)).select()
+    general_container = DIV(H2("When are you on campus?",_class='highlight'),_id=general_category.category_name)
+
+    question_id_list = []
+
+    #general questions
+    for question in general_question:
+        element = getQuestion(question) 
+        general_container.append(element)
+        question_id_list.append(question.id)
+    form.append(general_container)
+    form.append(DIV(INPUT(_type='submit',_name='next',_value='next',_class='surveyinput'),_class='surveyrow'))
 
     if form.accepts(request):
         session.bike = form.vars.bike
@@ -168,11 +182,15 @@ def modes():
         question = db(db.question.question_text == 'bus-days').select().first()
         db.response.update_or_insert(response_to=question.id,user=session.userid,answer=session.bus)
 
+        #general questions
+        for question_id in question_id_list:
+            answer_var = form.vars[str(question_id)]
+            db.response.update_or_insert(response_to=question_id,user=session.userid,answer=answer_var)
         redirect('route')
     elif form.errors:
-        response.flash = 'Please choose atleast 1 mode'
+        response.flash = 'Please answer all questions'
 
-    return dict(form=form)
+    return dict(form=form,question_id_list=question_id_list)
    
 def route():
 #route based on session data
@@ -245,6 +263,15 @@ def route():
                 redirect('analysis')
        
     return dict(kmlroute=kml_route,form=form,form2=form2)
+def walk():
+    #space for walk questions
+    return dict()
+def walking():
+    #space for walking map
+    return dict()
+def car():
+    #space for car questions
+    return dict()
 
 def parking():
     parking_lots_path = URL('static', 'kml/lots_outline.kmz')
@@ -277,6 +304,9 @@ def parking():
 
     return dict(parking_form=parking_form, parking_lots_path=parking_lots_path,offcampus_path=offcampus_path)
 
+def bike():
+    #space for biking questions
+    return dict()
 def biking():
     biking_form = FORM(
         INPUT(_type='submit',_value='confirm',_class='styledinput',_onclick='submitBikeMarker()'),
@@ -396,9 +426,11 @@ def getQuestion(question):
             element = DIV(H3(question.question_text),DIV(_id="week-slider-"+str(question.id),_class="week-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('day(s)',_class='float-left'),_class='tab-surveyrow') 
         elif question.type_id == '9':
             element = DIV(H3(question.question_text),DIV(_id="month-slider-"+str(question.id),_class="month-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('day(s)',_class='float-left'),_class='tab-surveyrow')  
- 
-
         return element
+
+def survey_redirect():
+
+    return 0
 
 
     
