@@ -145,6 +145,9 @@ def modes():
     DIV(H3('Car:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='car_slider'),
     INPUT(_type='text',_name='car',_id='car',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    DIV(H3('Carpool:',_class='hlabel float-left'),
+    DIV(_class='tran_slider', _id='carpool_slider'),
+    INPUT(_type='text',_name='carpool',_id='carpool',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Walk:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='walk_slider'),
     INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'))
@@ -168,6 +171,7 @@ def modes():
         session.car = form.vars.car
         session.walk = form.vars.walk
         session.bus = form.vars.bus
+        session.carpool = form.vars.carpool
         
         #insert varibles into database
         question = db(db.question.question_text == 'bike-days').select().first()
@@ -181,6 +185,9 @@ def modes():
 
         question = db(db.question.question_text == 'bus-days').select().first()
         db.response.update_or_insert(response_to=question.id,user=session.userid,answer=session.bus)
+
+        question = db(db.question.question_text == 'carpool-days').select().first()
+        db.response.update_or_insert(response_to=question.id,user=session.userid,answer=session.carpool)
 
         #general questions
         for question_id in question_id_list:
@@ -227,12 +234,17 @@ def route():
             response_user = db(db.response_user.email == session.email).select().first()
             db.response.update_or_insert(response_to=question.id,user=response_user.id,answer='true')
 
-            if session.car != '0':
-                redirect('parking')
+            if session.walk != '0':
+                redirect('walk')
             elif session.bike != '0':
-                redirect('biking')
-            else:
-                redirect('analysis')
+                redirect('bike')
+            elif session.car != '0':
+                redirect('car')
+            elif session.bus != '0':
+                redirect('bus')
+            elif session.carpool != '0':
+                redirect('carpool')
+
         else:
             #set session vars to create new route
             response.flash = 'Please edit and confirm your route'
@@ -255,23 +267,150 @@ def route():
             response_user = db(db.response_user.email == session.email).select().first()
             db.response.update_or_insert(response_to=question.id,user=response_user.id,answer=form2.vars.route)
 
-            if session.car != '0':
-                redirect('parking') 
+            if session.walk != '0':
+                redirect('walk')
             elif session.bike != '0':
-                redirect('biking')
-            else:
-                redirect('analysis')
-       
+                redirect('bike')
+            elif session.car != '0':
+                redirect('car')
+            elif session.bus != '0':
+                redirect('bus')
+            elif session.carpool != '0':
+                redirect('carpool')
+ 
     return dict(kmlroute=kml_route,form=form,form2=form2)
+
 def walk():
     #space for walk questions
-    return dict()
+    form = FORM()
+
+    walk_category = db(db.category.category_name=='walk').select().first()
+    walk_question =  db((db.question.category==walk_category.id) & (db.question.type_id != 0)).select()
+    walk_container = DIV(_id=walk_category.category_name)
+
+    question_id_list = []
+
+    #add each question from the database to the form
+    for question in walk_question:
+        element = getQuestion(question)
+        walk_container.append(element)
+        question_id_list.append(question.id)
+    form.append(walk_container)
+    form.append(DIV(INPUT(_type='submit',_value='next', _class='surveyinput'),_class='surveyrow'))
+
+    #if form validates
+    if form.accepts(request):
+        for question in question_id_list:
+            answer_var = form.vars[str(question)]
+            db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
+        redirect('walking')
+    elif form.errors:
+        response.flash = 'fix form errors'
+
+    return dict(form=form,question_id_list=question_id_list)
+
 def walking():
     #space for walking map
-    return dict()
+    form = FORM()
+
+    form.append(INPUT(_type='submit', _class='styledinput',_value='submit'))
+
+    if form.accepts(request):
+        #save information
+        if session.bike != '0':
+            redirect('bike')
+        elif session.car != '0':
+            redirect('car')
+        elif session.bus != '0':
+            redirect('bus')
+        elif session.carpool != '0':
+            redirect('carpool')
+
+    elif form.errors:
+        response.flash = 'error'
+    return dict(form=form)
+
+def bike():
+    #space for biking questions
+    form = FORM()
+    bike_category = db(db.category.category_name=='bike').select().first()
+    bike_question = db((db.question.category==bike_category.id) & (db.question.type_id != 0)).select()
+    bike_container = DIV(_id=bike_category.category_name)
+
+    question_id_list = []
+    
+    for question in bike_question:
+        element = getQuestion(question)
+        bike_container.append(element)
+        question_id_list.append(question.id)
+    form.append(bike_container)
+    form.append(DIV(INPUT(_type='submit',_class='surveyinput', _value='next'),_class='surveyrow'))
+
+    if form.accepts(request):
+        for question in question_id_list:
+            answer_var = form.vars[str(question)]
+            db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
+        redirect('biking')
+    elif form.errors:
+        response.flash = 'fix form errors'
+        
+
+
+    return dict(question_id_list=question_id_list,form=form)
+
+def biking():
+    biking_form = FORM(
+        INPUT(_type='submit',_value='confirm',_class='styledinput',_onclick='submitBikeMarker()'),
+        INPUT(_type='hidden',_name='bikes',_id='bike-rack-hidden',requires=IS_NOT_EMPTY(error_message='Please select atleast one bike rack location'))
+        ,_id='bike-form')
+
+    if biking_form.accepts(request):
+        biking_rack = biking_form.vars.bikes
+        question = db(db.question.question_text == 'bike-racks').select().first()
+        response_user = db(db.response_user.email == session.email).select().first()
+        db.response.update_or_insert(response_to=question.id,user=response_user.id,answer=biking_rack)
+
+        #routing
+        if session.car != '0':
+            redirect('car')
+        elif session.bus != '0':
+            redirect('bus')
+        elif session.carpool != '0':
+            redirect('carpool')
+
+    elif biking_form.errors:
+        response.flash = 'Please select atleast one bike rack location'
+
+
+    return dict(biking_form=biking_form)
+
 def car():
-    #space for car questions
-    return dict()
+    form = FORM()
+
+    car_category = db(db.category.category_name=='car').select().first()
+    car_question = db((db.question.category==car_category.id) & (db.question.type_id != 0)).select()
+
+    car_container = DIV(_id=car_category.category_name)
+
+    question_id_list = []
+
+    for question in car_question:
+        element = getQuestion(question)
+        car_container.append(element)
+        question_id_list.append(question.id)
+    
+    form.append(car_container)
+    form.append(DIV(INPUT(_type='submit',_class='surveyinput', _value='next'),_class='surveyrow'))
+
+    if form.accepts(request):
+        for question in question_id_list:
+            answer_var = form.vars[str(question)]
+            db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
+        redirect('parking')
+    elif form.errors:
+        response.flash = 'please answer car questions'
+
+    return dict(form=form,question_id_list=question_id_list)
 
 def parking():
     parking_lots_path = URL('static', 'kml/lots_outline.kmz')
@@ -294,36 +433,24 @@ def parking():
         question = db(db.question.question_text == 'parking-lots-off').select().first()
         db.response.update_or_insert(response_to=question.id,user=session.userid,answer=parking_off)
 
-        if session.bike != '0':
-            redirect('biking')
-        else:
-            redirect('analysis')
+        if session.bus != '0':
+            redirect('bus')
+        elif session.carpool != '0':
+            redirect('carpool')
 
     elif parking_form.errors:
         response.flash = 'Please select atleast one parking location'
 
     return dict(parking_form=parking_form, parking_lots_path=parking_lots_path,offcampus_path=offcampus_path)
 
-def bike():
-    #space for biking questions
+
+def bus():
+    #bus questions
     return dict()
-def biking():
-    biking_form = FORM(
-        INPUT(_type='submit',_value='confirm',_class='styledinput',_onclick='submitBikeMarker()'),
-        INPUT(_type='hidden',_name='bikes',_id='bike-rack-hidden',requires=IS_NOT_EMPTY(error_message='Please select atleast one bike rack location'))
-        ,_id='bike-form')
 
-    if biking_form.accepts(request):
-        biking_rack = biking_form.vars.bikes
-        question = db(db.question.question_text == 'bike-racks').select().first()
-        response_user = db(db.response_user.email == session.email).select().first()
-        db.response.update_or_insert(response_to=question.id,user=response_user.id,answer=biking_rack)
-        redirect('analysis')
-    elif biking_form.errors:
-        response.flash = 'Please select atleast one bike rack location'
-
-
-    return dict(biking_form=biking_form)
+def carpool():
+    #carpool questions
+    return dict()
 
 def analysis():
     tab_container = DIV(_id='tabs')
@@ -403,7 +530,7 @@ def final():
 def getQuestion(question):
         element = ''
         if question.type_id == '1':
-            element = DIV(H3(question.question_text, _class="hlabel float-left"),TEXTAREA(_type='text',_class='styledinput float-left', _name=question.id),_class='surveyrow')
+            element = DIV(H3(question.question_text, _class="hlabel float-left"),TEXTAREA(_type='text',_cols="80",_class='styledinput float-left', _name=question.id,_requires=IS_NOT_EMPTY()),_class='surveyrow')
         elif question.type_id == '2':
             element = DIV(H3(question.question_text, _class='float-left'),INPUT(_type='text',_class='tab-inputmargin styledinput float-left', _name=question.id,requires=IS_NOT_EMPTY()),_class='sixcol tab-centermargin')
         elif question.type_id == '3':
@@ -426,6 +553,13 @@ def getQuestion(question):
             element = DIV(H3(question.question_text),DIV(_id="week-slider-"+str(question.id),_class="week-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('day(s)',_class='float-left'),_class='tab-surveyrow') 
         elif question.type_id == '9':
             element = DIV(H3(question.question_text),DIV(_id="month-slider-"+str(question.id),_class="month-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('day(s)',_class='float-left'),_class='tab-surveyrow')  
+        elif question.type_id == '10':
+            element = DIV(H3(question.question_text),_class='tab-surveyrow')
+            list_element = UL(_id=question.id,_class='check-list')
+            for option in question.answers.split(','):
+                list_element.append(LI(DIV(INPUT(_type='checkbox', _class='checkbox-'+str(question.id),_value=option),H4(option,_class='label')),_class='error-border'))
+            element.append(list_element)
+            element.append(INPUT(_type='hidden',_id=str(question.id)+'-checkbox-hidden',_requires=IS_NOT_EMPTY()))
         return element
 
 def survey_redirect():

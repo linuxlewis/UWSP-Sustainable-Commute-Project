@@ -50,6 +50,13 @@ body {
 h2{
     font-size:1.7em;
 }
+h3 {
+    font: 1.5em 'COM4tSansMediumRegular';
+
+}
+h4{
+    font-size:1.3em;
+}
 .styledinput {
     padding-left: 8px;
     height: 31px;
@@ -66,6 +73,10 @@ h2{
     box-shadow:inset 0 0 3px 0 #c8c8c8;
     color:#6b6f72;
     
+}
+textarea.styledinput{
+    width:450px;
+    height:100px;
 }
 
 
@@ -152,6 +163,10 @@ h2{
     background:url(../img/content_bg.png) #6d6e71;
     z-index:-1;
     margin-top:40px;
+    -webkit-box-shadow: 0px -1px 2px 0px #312c27;
+    -moz-box-shadow: 0px -1px 2px 0px #312c27;
+    box-shadow: 0px -1px 2px 0px #312c27;
+
 }
 
 #content h1 {
@@ -257,10 +272,7 @@ h2{
 }
 
 
-h3 {
-    font: 1.5em 'COM4tSansMediumRegular';
 
-}
 
 /*Footer Start*/
 
@@ -629,6 +641,9 @@ html[xmlns] #nav {
     clear:both;
     font: 1.5em 'COM4tSansMediumRegular';
 }
+.label{
+    display:inline;
+}
 .surveyinput{
     float:right;
     clear:both;
@@ -639,9 +654,25 @@ select.tabinput{
     color:#312E25;
     margin-top:35px;
     margin-left:30px;
-
-
 }
+ul.check-list{
+    text-decoration:none;
+    list-style-type:none;
+}
+ul.check-list li{
+    padding:3px;
+    padding-left:6px;
+    height:30px;
+    width:170px;
+    float:left;
+    margin-right:5px;
+    margin-top:5px;
+}
+
+ul.check-list li div input{
+    margin-right:5px;
+}
+
 .clear{
     clear:both;
 }
@@ -649,6 +680,9 @@ select.tabinput{
     height:75px;
     clear:both;
     margin:10px 0 15px 0;
+}
+.checkbox-row{
+    height:500px;
 }
 .tab-surveyrow{
     height:150px;
@@ -805,5 +839,21 @@ input.minute-input{
 }
 .center-margin{
     margin:0 auto;
+}
+.highlight-border{
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border-color: #aed136;
+    border-style:solid;
+    border-width:3px;
+}
+.error-border{
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border-color: #9E2819;
+    border-style:solid;
+    border-width:3px;
 }
 
