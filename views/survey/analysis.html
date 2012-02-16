@@ -1,0 +1,76 @@
+
+{{extend 'layout_new.html'}}
+{{block head}}
+<link rel="stylesheet" type="text/css" href="{{=URL('static','css/timePicker.css')}}" />
+<script type="text/javascript" src="{{=URL('static','js/jquery.timePicker.min.js')}}"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    {{for question in question_id_list: }}
+    $("#time-input-{{=question}}").timePicker({
+                                        startTime:"06:00",
+                                        show24Hours: false});
+    
+    $("#minute-slider-{{=question}}").slider({max:180,
+                                min:0,
+                                slide:function(event,ui){
+                                    $("#slider-input-{{=question}}").val(ui.value);
+                                },
+                                create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#minute-slider-{{=question}}").slider("value"));
+                                }
+                        
+    });
+    //$("#slider-input-{{=question}}").val($("#minute-slider-{{=question}}").slider("value"));
+    $("#hour-slider-{{=question}}").slider({max:60,
+                                    min:0,
+                                    slide:function(event,ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#hour-slider-{{=question}}").slider("value"));
+                                    }
+                                    
+                                });
+    $("#people-slider-{{=question}}").slider({max:12,
+                                    min:1,
+                                    slide:function(event, ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#people-slider-{{=question}}").slider("value"));
+                                    }
+                                });
+    $("#week-slider-{{=question}}").slider({max:7,
+                                    slide:function(event,ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#week-slider-{{=question}}").slider("value"));
+                                    }
+                                });
+    $("#month-slider-{{=question}}").slider({max:30,
+                                    slide:function(event,ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#month-slider-{{=question}}").slider("value"));
+
+                                    }
+                                });
+    {{pass}}
+    $("#tabs").tabs();
+});
+
+</script>
+{{ end}}
+{{block content}}
+    <div style="text-align:center;">
+    <h1>Transportation <span class="highlight">Analysis</h1>
+    <div class="divider"></div>
+    <h2 class="hlabel">Make sure to complete each section before submitting</h2>
+    <div class="questions">
+        {{=form}}
+    </div>
+    </div>
+
+{{end}}

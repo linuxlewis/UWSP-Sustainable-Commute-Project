@@ -1,0 +1,81 @@
+{{extend 'layout_new.html'}}
+{{block head}}
+<link rel="stylesheet" type="text/css" href="{{=URL('static','css/timePicker.css')}}" />
+<script type="text/javascript" src="{{=URL('static','js/jquery.timePicker.min.js')}}"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    {{for question in question_id_list: }}
+    $("#time-input-{{=question}}").timePicker({
+                                        startTime:"06:00",
+                                        show24Hours: false});
+    
+                        
+    //$("#slider-input-{{=question}}").val($("#minute-slider-{{=question}}").slider("value"));
+    $("#hour-slider-{{=question}}").slider({max:60,
+                                    min:0,
+                                    slide:function(event,ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#hour-slider-{{=question}}").slider("value"));
+                                    }
+                                    
+                                });
+    {{pass}}
+});
+
+</script>
+{{end}}
+{{block content}}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#bike_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#bike").val(ui.value);
+		                	}
+    });
+    $("#car_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#car").val(ui.value);
+		                	}
+    });
+    $("#bus_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#bus").val(ui.value);
+		                	}
+    });
+    $("#walk_slider").slider({ max: 7,
+                            min:0,
+                            range:"min",
+                            slide: function( event, ui ) {
+				                $( "#walk").val(ui.value);
+		                	}
+    });
+    $("#carpool_slider").slider({ max: 7,
+                                min:0,
+                                range:"min",
+                                slide: function(event, ui) {
+                                    $("#carpool").val(ui.value);
+                                }
+                            });
+    $( "#bike" ).val($( "#bike_slider" ).slider( "value" ) );
+    $( "#car" ).val($( "#car_slider" ).slider( "value" ) );
+    $( "#bus" ).val($( "#bus_slider" ).slider( "value" ) );
+    $( "#walk" ).val($( "#walk_slider" ).slider( "value" ) );
+    $( "#carpool").val($("#carpool_slider").slider("value"));
+});
+</script>
+
+<h1 style="text-align:center;">How do you get to <span class="highlight">UWSP?</span></h1>
+<div class="divider"></div>
+   <div class="ninecol" style="margin:0 12em 0 12em;">
+    {{=form}}
+    <div class="divider"></div>
+</div>
+{{end}}

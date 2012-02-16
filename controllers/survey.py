@@ -3,10 +3,10 @@ def index():
     #uwsp form
     form=FORM(DIV(H3('UWSP ID:',_class='hlabel'),
     INPUT(_name='uwspid',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(LABEL('UWSP Status:',_class='hlabel',_for='uwstatus'),SELECT('Student','Faculty','Staff',_name='uwstatus',_value='Student',_class='surveyinput',_id='uwstatus'),_class='surveyrow'),
+    DIV(LABEL('UWSP Status:',_class='hlabel',_for='uwstatus'),SELECT(' ','Student','Faculty','Staff',_name='uwstatus',_value='Student',_class='surveyinput',_id='uwstatus',requires=IS_NOT_EMPTY('select a value')),_class='surveyrow'),
     DIV(LABEL('Years at UWSP:',_class='hlabel',_for='uwyears'),INPUT(_name='uwyears',_class='styledinput surveyinput',_id='uwyears',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(LABEL('Dept. of Work/Study:',_class='hlabel',_for='uwdept'),
-        SELECT('Administration','Anthropology','Art and Design','Astronomy and Physics','Biology','Business and Economics','Chemistry','Communication','Communicative Disorders','Computer Information Systems','Dance and Theatre','Education','English','Foreign Languages','Forestry','Geography and Geology','Health, Exercise Science and Athletics','Health Promotion & Human Development','Health Sciences','History', 'Interior Architecture','Information Technology','Library','Maintenance','Mathematical Sciences','Music','Paper Science','Philsophy','Physics and Astronomy','Political Science','Psychology','Religious Studies','Reserve Officers Training Corps','Resource Management','Sociology & Social Work','Soil and Waste Resources','Theatre and Dance','Water Resources','Web and Digital Media Development','Wildlife','Womens Studies',_name='uwdept',_class='surveyinput'),_class='surveyrow'),
+        SELECT(' ','Administration','Anthropology','Art and Design','Astronomy and Physics','Biology','Business and Economics','Chemistry','Communication','Communicative Disorders','Computer Information Systems','Dance and Theatre','Education','English','Foreign Languages','Forestry','Geography and Geology','Health, Exercise Science and Athletics','Health Promotion & Human Development','Health Sciences','History', 'Interior Architecture','Information Technology','Library','Maintenance','Mathematical Sciences','Music','Paper Science','Philsophy','Physics and Astronomy','Political Science','Psychology','Religious Studies','Reserve Officers Training Corps','Resource Management','Sociology & Social Work','Soil and Waste Resources','Theatre and Dance','Water Resources','Web and Digital Media Development','Wildlife','Womens Studies',_name='uwdept',_class='surveyinput',requires=IS_NOT_EMPTY('select a value')),_class='surveyrow'),
     DIV(INPUT(_type='submit',_value='start',_class='surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),_formname='form1')
     
     
@@ -19,8 +19,7 @@ def index():
         session.isUwspUser = 1
         redirect(URL('address'))
     elif form.errors:
-        response.flash = 'Please fix the form errors'
-        
+        response.flash = 'Please answer all questions' 
     return dict(form=form)
 
 def address():
@@ -305,15 +304,14 @@ def walk():
             db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
         redirect('walking')
     elif form.errors:
-        response.flash = 'fix form errors'
+        response.flash = 'Please answer all questions.'
 
     return dict(form=form,question_id_list=question_id_list)
 
 def walking():
     #space for walking map
     form = FORM()
-
-    form.append(INPUT(_type='submit', _class='styledinput',_value='submit'))
+    form.append(DIV(INPUT(_type='submit',_name='next',_value='next',_class='surveyinput'),_class='surveyrow'))
 
     if form.accepts(request):
         #save information
@@ -328,6 +326,7 @@ def walking():
 
     elif form.errors:
         response.flash = 'error'
+
     return dict(form=form)
 
 def bike():
@@ -352,15 +351,13 @@ def bike():
             db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
         redirect('biking')
     elif form.errors:
-        response.flash = 'fix form errors'
+        response.flash = 'Please answer all questions.'
         
-
-
     return dict(question_id_list=question_id_list,form=form)
 
 def biking():
     biking_form = FORM(
-        INPUT(_type='submit',_value='confirm',_class='styledinput',_onclick='submitBikeMarker()'),
+        INPUT(_type='submit',_value='next',_class='surveyinput',_onclick='submitBikeMarker()'),
         INPUT(_type='hidden',_name='bikes',_id='bike-rack-hidden',requires=IS_NOT_EMPTY(error_message='Please select atleast one bike rack location'))
         ,_id='bike-form')
 
@@ -408,7 +405,7 @@ def car():
             db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
         redirect('parking')
     elif form.errors:
-        response.flash = 'please answer car questions'
+        response.flash = 'Please answer all questions.'
 
     return dict(form=form,question_id_list=question_id_list)
 
@@ -418,7 +415,7 @@ def parking():
 
     #parking lot form
     parking_form = FORM(
-        INPUT(_type='submit',_value='confirm',_class='styledinput',_onclick='submitLot()'),
+        INPUT(_type='submit',_value='next',_class='surveyinput',_onclick='submitLot()'),
         INPUT(_type='hidden',_name='campus_lots',_id='campus-hidden',requires=IS_NOT_EMPTY(error_message='Please select atleast one parking lot')),
         INPUT(_type='hidden',_name='off_lots',_id='off-hidden')
         ,_id='parking_form')
@@ -446,11 +443,60 @@ def parking():
 
 def bus():
     #bus questions
-    return dict()
+    form = FORM()
+    bus_category = db(db.category.category_name=='bus').select().first()
+    bus_question = db((db.question.category==bus_category.id) & (db.question.type_id != 0)).select()
+    bus_container = DIV(_id=bus_category.category_name)
+
+    question_id_list = []
+    
+    for question in bus_question:
+        element = getQuestion(question)
+        bus_container.append(element)
+        question_id_list.append(question.id)
+    form.append(bus_container)
+    form.append(DIV(INPUT(_type='submit',_class='surveyinput', _value='next'),_class='surveyrow'))
+
+    if form.accepts(request):
+        for question in question_id_list:
+            answer_var = form.vars[str(question)]
+            db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
+
+            if session.carpool != '0': 
+                redirect('carpool')
+    elif form.errors:
+        response.flash = 'Please answer all questions.'
+        
+    return dict(question_id_list=question_id_list,form=form)
 
 def carpool():
     #carpool questions
-    return dict()
+    #bus questions
+    form = FORM()
+    carpool_category = db(db.category.category_name=='carpool').select().first()
+    carpool_question = db((db.question.category==carpool_category.id) & (db.question.type_id != 0)).select()
+    carpool_container = DIV(_id=carpool_category.category_name)
+
+    question_id_list = []
+    
+    for question in carpool_question:
+        element = getQuestion(question)
+        carpool_container.append(element)
+        question_id_list.append(question.id)
+    form.append(carpool_container)
+    form.append(DIV(INPUT(_type='submit',_class='surveyinput', _value='next'),_class='surveyrow'))
+
+    if form.accepts(request):
+        for question in question_id_list:
+            answer_var = form.vars[str(question)]
+            db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
+            #routing
+            redirect('final')
+                
+    elif form.errors:
+        response.flash = 'Please answer all questions.'
+        
+    return dict(question_id_list=question_id_list,form=form)
 
 def analysis():
     tab_container = DIV(_id='tabs')
@@ -530,9 +576,9 @@ def final():
 def getQuestion(question):
         element = ''
         if question.type_id == '1':
-            element = DIV(H3(question.question_text, _class="hlabel float-left"),TEXTAREA(_type='text',_cols="80",_class='styledinput float-left', _name=question.id,_requires=IS_NOT_EMPTY()),_class='surveyrow')
+            element = DIV(H3(question.question_text, _class="hlabel float-left"),TEXTAREA(_type='text',_cols="80",_class='styledinput float-left', _name=question.id, requires=IS_NOT_EMPTY()),_class='surveyrow')
         elif question.type_id == '2':
-            element = DIV(H3(question.question_text, _class='float-left'),INPUT(_type='text',_class='tab-inputmargin styledinput float-left', _name=question.id,requires=IS_NOT_EMPTY()),_class='sixcol tab-centermargin')
+            element = DIV(H3(question.question_text, _class='hlabel'),INPUT(_type='text',_class='surveyinput styledinput', _name=question.id,requires=IS_NOT_EMPTY()),_class='eightcol surveyrow')
         elif question.type_id == '3':
             element = DIV(H3(question.question_text, _class='float-left'),INPUT(_type='text',_class='styledinput timeinput float-right', _name=question.id,
                 requires=IS_NOT_EMPTY(),_id="time-input-"+str(question.id)),_class='surveyrow')
@@ -541,8 +587,9 @@ def getQuestion(question):
         elif question.type_id == '5':
             element = DIV(H3(question.question_text,_class='float-left'),DIV(_id="hour-slider-"+str(question.id),_class="hour-slider float-left"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('hours',_class='float-left'),_class='tab-surveyrow') 
         elif question.type_id == '6':
-            element = DIV(H3(question.question_text,_class='float-left'),_class='tab-surveyrow')
-            select = SELECT(_name=question.id,_id=question.id,_class="tabinput float-left")
+            element = DIV(H3(question.question_text,_class='float-left'),_class='surveyrow')
+            select = SELECT(_name=question.id,_id=question.id,_class="surveyinput float-left",requires=IS_NOT_EMPTY())
+            select.append(" ")
             options = question.answers.split(',')
             for option in options:
                 select.append(option)
@@ -554,12 +601,11 @@ def getQuestion(question):
         elif question.type_id == '9':
             element = DIV(H3(question.question_text),DIV(_id="month-slider-"+str(question.id),_class="month-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('day(s)',_class='float-left'),_class='tab-surveyrow')  
         elif question.type_id == '10':
-            element = DIV(H3(question.question_text),_class='tab-surveyrow')
-            list_element = UL(_id=question.id,_class='check-list')
+            element = DIV(H3(question.question_text, _class='float-left'),_class='tab-surveyrow')
+            list_element = UL(_id=question.id, _class='check-list')
             for option in question.answers.split(','):
                 list_element.append(LI(DIV(INPUT(_type='checkbox', _class='checkbox-'+str(question.id),_value=option),H4(option,_class='label')),_class='error-border'))
             element.append(list_element)
-            element.append(INPUT(_type='hidden',_id=str(question.id)+'-checkbox-hidden',_requires=IS_NOT_EMPTY()))
         return element
 
 def survey_redirect():

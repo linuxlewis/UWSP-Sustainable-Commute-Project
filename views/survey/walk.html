@@ -1,0 +1,38 @@
+{{extend 'layout_new.html'}}
+
+{{block head}}
+<script type="text/javascript">
+    $(document).ready(function(){
+       {{for question in question_id_list: }}
+            $("#minute-slider-{{=question}}").slider({max:180,
+                                min:0,
+                                slide:function(event,ui){
+                                    $("#slider-input-{{=question}}").val(ui.value);
+                                },
+                                create:function(event,ui){
+                                    $("#slider-input-{{=question}}").val($("#minute-slider-{{=question}}").slider("value"));
+                                }
+                        
+             });
+
+            //ui toggle for apply all checkbox
+        $(".checkbox-{{=question}}").click(function(){
+            $(this).parent().parent().toggleClass('highlight-border');
+            $(this).parent().parent().toggleClass('error-border');
+        });
+ 
+        {{pass}}
+    });
+
+</script>
+{{end}}
+
+{{block content}}
+<h1 style="text-align:center;">Walking to <span class="highlight">UWSP</span></h1>
+<div class="divider"></div>
+   <div class="ninecol" style="margin:0 12em 0 12em;">
+    {{=form}}
+    <div class="divider"></div>
+</div>
+{{end}}
+

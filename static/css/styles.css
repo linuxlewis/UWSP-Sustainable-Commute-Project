@@ -649,6 +649,12 @@ html[xmlns] #nav {
     clear:both;
     min-width:250px;
 }
+input.surveyinput{
+    margin-top:30px;
+}
+select.surveyinput{
+    margin-top:25px;
+}
 select.tabinput{
     font-size:1.5em;
     color:#312E25;
