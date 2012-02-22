@@ -53,12 +53,12 @@ def setupdb():
     category = db(db.category.category_name == 'bike').select().first()
     db.question.update_or_insert(question_text='bike-days',category=category.id,type_id=0)
     db.question.update_or_insert(question_text='bike-racks',category=category.id,type_id=0)
-    db.question.update_or_insert(question_text='How long have you been bicycle commuting to campus?', category=category.id, type_id=1)
     db.question.update_or_insert(question_text='How long does it take you to bike to campus?', category=category.id, type_id=4)
-    db.question.update_or_insert(question_text='Which weather conditions are not suitable for bicycle commuting? Check all that apply.',category=category.id, type_id=10, answers='Sunny, Temperature, Overcast, Raining, Wet streets, Snowing, Snow on streets, Nighttime')
     db.question.update_or_insert(question_text='How many days do you leave a bike on campus?',category=category.id,type_id=8)
     db.question.update_or_insert(question_text='How long has it been since you road a bike?',category=category.id,type_id=9)
-
+    db.question.update_or_insert(question_text='How long have you been bicycle commuting to campus?', category=category.id, type_id=1)
+    db.question.update_or_insert(question_text='Which weather conditions are not suitable for bicycle commuting? Check all that apply.',category=category.id, type_id=10, answers='Sunny, Temperature, Overcast, Raining, Wet streets, Snowing, Snow on streets, Nighttime')
+    
     #carpool questions
     category = db(db.category.category_name == 'carpool').select().first()
     db.question.update_or_insert(question_text='carpool-days',category=category.id,type_id=0)
