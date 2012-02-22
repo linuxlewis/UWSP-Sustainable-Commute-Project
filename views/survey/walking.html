@@ -93,9 +93,9 @@ function clearBikeClick(e){
     clearBikeMarker();
 }
 function refreshBikeMarkerUI(){
-    $("#bike-rack-locations").empty();
+    $("#walking-locations").empty();
     for(var i = 0; i < markers.length; i++){
-       $("#bike-rack-locations").append('<li><h4>'+markers[i].position+'</h4></li>'); 
+       $("#walking-locations").append('<li><h4>'+markers[i].position+'</h4></li>'); 
     }
 
 }

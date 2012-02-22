@@ -4,8 +4,15 @@
 function dormClick(){
     $(".top_address_form").toggleClass("hidden-div","2");
     $("#dorm_form").toggleClass("hidden-div","2");
-
 }
+$('#address-form').submit(function(){
+   //dorm checked
+   alert('submit');
+   if($('#dorm-check').is(':checked')){
+       $('#addr').val($('#dorm-select').val()); 
+       alert($('#addr').val());
+   }
+});
 </script>
 <div style="text-align:center;">
 <h1>Where do you <span class="highlight">live?</span></h1>

@@ -20,13 +20,15 @@
             $(this).parent().parent().toggleClass('highlight-border');
             $(this).parent().parent().toggleClass('error-border');
         });
-        $("form").bind("submit",function(){
+
+        $("form").submit(function(){
             var submitted = '';
             $(".checkbox-{{=question}}:checked").each(function(){
                 submitted += $(this).val() + ',';
             });
-            $("{{=question}}-checkbox-hidden").val(submitted);
+            $("#check-list-hidden-{{=question}}").val(submitted);
         });
+
 
 
         $("#week-slider-{{=question}}").slider({max:7,

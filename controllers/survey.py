@@ -1,4 +1,7 @@
 def index(): 
+    #clear userid if multiple users per machine
+    if session.userid:
+        del session.userid
  
     #uwsp form
     form=FORM(DIV(H3('UWSP ID:',_class='hlabel'),
@@ -27,14 +30,14 @@ def address():
     #create address form
     form=FORM(
     DIV(
-    DIV(H3('Address:',_class='hlabel'),INPUT(_name='addr',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
+    DIV(H3('Address:',_class='hlabel'),INPUT(_name='addr',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow',_id='addr'),
     DIV(H3('City:',_class='hlabel'),INPUT(_name='city',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(H3('State:',_class='hlabel'),INPUT(_name='state',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(H3('Zip Code:',_class='hlabel'),INPUT(_name='zip',_maxlength='5',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),_class='top_address_form'),
-    DIV(H3('Live in the dorms?',_class='hlabel'),INPUT(_name='dorm',_type='checkbox',_onclick='dormClick();'),_class='surveyrow surveyhighlight'),
-    DIV(H3('Dorm:',_class='hlabel'),SELECT('Neale','Baldwin','Steiner','Burroughs','Watson','Smith','May-Roach','Hansen','Knutzen','Hyer','Pray-Sims','Thomson','Suites@201',_class='surveyinput'),_class='surveyrow hidden-div',_id='dorm_form'),
+    DIV(H3('Live in the dorms?',_class='hlabel'),INPUT(_name='dorm',_type='checkbox',_onclick='dormClick();',_id='dorm-check'),_class='surveyrow surveyhighlight'),
+    DIV(H3('Dorm:',_class='hlabel'),SELECT('','Neale','Baldwin','Steiner','Burroughs','Watson','Smith','May-Roach','Hansen','Knutzen','Hyer','Pray-Sims','Thomson','Suites@201',_class='surveyinput',_id='dorm-select'),_class='surveyrow hidden-div',_id='dorm_form'),
         DIV(INPUT(_type='submit',_value='next',_class='surveyinput'),_class='surveyrow'),
-    _formname='address_form')
+    _formname='address_form',_id='address-form')
     
     #initilize form2
     form2 = FORM()
@@ -74,12 +77,12 @@ def address():
                 #uwsp user not in data
                 #add additional information form
                 response.flash = 'UWSP ID: ' + session.uwspid + ' not found! Fill out additional name information.'
-                form2 = FORM(
+                form2 = DIV(
                 DIV(H3('First Name:',_class='hlabel'),INPUT(_name='fname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
                 DIV(H3('Last Name:',_class='hlabel'),INPUT(_name='lname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-                DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',requires=IS_EMAIL()),_class='surveyrow'),_formname='form2')
+                DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',requires=IS_EMAIL()),_class='surveyrow'))
                 session.isUwspUser = 0
-                form.insert(-1,form2)
+                form.insert(0,form2)
             
     #if address form validates
     if form.accepts(request,session,formname='address_form'):
@@ -126,7 +129,7 @@ def address():
                 uwspresult.update_record()
             else:
                 #insert new record
-                db.uwsp_user.insert(uwsp_id = session.uwspid,uwsp_status = session.uwstatus, uwsp_years = session.uwyears, user = result.id)        
+                db.uwsp_user.insert(uwsp_id = session.uwspid,uwsp_status = session.uwstatus, uwsp_years = session.uwyears,uwsp_dept = session.uwdept, user = result.id)        
         
         redirect(URL('modes'))
      
@@ -217,7 +220,7 @@ def route():
 
     #create confirmation form
     form = FORM(
-    H1('Is this your route to UWSP?'),
+    H2('Is this your route to UWSP?', _class='highlight'),
     INPUT(_type='submit',_value='Yes',_name='map_accurate',_class='styledinput'),
     INPUT(_type='submit',_value='No',_name='map_accurate',_class='styledinput'))
     
@@ -252,7 +255,7 @@ def route():
 
     #create drag route form
     form2 = FORM(
-           H2('Please drag the route to reflect the route you take to UWSP'),
+           H2('Please drag the route to reflect the route you take to UWSP', _class='highlight'),
            INPUT(_type='submit',_value='Confirm',_name='map_confirm',_class='styledinput '),
            INPUT(_type='hidden',_name='route',_id='route', requires=IS_NOT_EMPTY()))
        
@@ -281,7 +284,7 @@ def route():
 
 def walk():
     #space for walk questions
-    form = FORM()
+    form = FORM(_id='work-form')
 
     walk_category = db(db.category.category_name=='walk').select().first()
     walk_question =  db((db.question.category==walk_category.id) & (db.question.type_id != 0)).select()
@@ -311,10 +314,14 @@ def walk():
 def walking():
     #space for walking map
     form = FORM()
+    form.append(INPUT(_type='hidden',_name='walk',_id='walk-spots'))
     form.append(DIV(INPUT(_type='submit',_name='next',_value='next',_class='surveyinput'),_class='surveyrow'))
 
     if form.accepts(request):
         #save information
+        question = db(db.question.question_text == 'walk-spots').select().first()
+        db.response.update_or_insert(response_to = question.id, user=session.userid, answer=form.vars.walk)
+
         if session.bike != '0':
             redirect('bike')
         elif session.car != '0':
@@ -323,6 +330,8 @@ def walking():
             redirect('bus')
         elif session.carpool != '0':
             redirect('carpool')
+        else:
+            redirect('final')
 
     elif form.errors:
         response.flash = 'error'
@@ -331,7 +340,7 @@ def walking():
 
 def bike():
     #space for biking questions
-    form = FORM()
+    form = FORM(_id='bike-form')
     bike_category = db(db.category.category_name=='bike').select().first()
     bike_question = db((db.question.category==bike_category.id) & (db.question.type_id != 0)).select()
     bike_container = DIV(_id=bike_category.category_name)
@@ -374,6 +383,9 @@ def biking():
             redirect('bus')
         elif session.carpool != '0':
             redirect('carpool')
+        else:
+            redirect('final')
+
 
     elif biking_form.errors:
         response.flash = 'Please select atleast one bike rack location'
@@ -434,6 +446,8 @@ def parking():
             redirect('bus')
         elif session.carpool != '0':
             redirect('carpool')
+        else:
+            redirect('final')
 
     elif parking_form.errors:
         response.flash = 'Please select atleast one parking location'
@@ -464,6 +478,9 @@ def bus():
 
             if session.carpool != '0': 
                 redirect('carpool')
+            else:
+                redirect('final')
+
     elif form.errors:
         response.flash = 'Please answer all questions.'
         
@@ -498,77 +515,6 @@ def carpool():
         
     return dict(question_id_list=question_id_list,form=form)
 
-def analysis():
-    tab_container = DIV(_id='tabs')
-    tab_nav = UL()
-    tab_container.append(tab_nav)
-    form = FORM()
-
-    #general questions
-    general_category = db(db.category.category_name=='route').select().first()
-    general_question = db((db.question.category==general_category.id) & (db.question.type_id != 0)).select()
-    general_container = DIV(_id=general_category.category_name)
-    tab_nav.append(A("General Analysis",_href="#"+general_category.category_name))
-    general_container.append(DIV(H3("General Route",_class='hlabel'),DIV(_class="divider")))
-
-    question_id_list = []
-
-    #general questions
-    for question in general_question:
-        element = getQuestion(question) 
-        general_container.append(element)
-        question_id_list.append(question.id)
-    tab_container.append(general_container)
-
-    #if user uses car to get to uwsp
-    if session.car != '0':
-
-        car_category = db(db.category.category_name=='car').select().first()
-        tab_nav.append(A("Car Analysis",_href="#"+car_category.category_name))
-
-        car_question = db((db.question.category==car_category.id) & (db.question.type_id != 0)).select()
-
-        car_container = DIV(_id=car_category.category_name)
-        car_container.append(DIV(H3("Car Analysis",_class='hlabel'),DIV(_class='divider')))
-        for question in car_question:
-            element = getQuestion(question)
-            car_container.append(element)
-            question_id_list.append(question.id)
-        tab_container.append(car_container)
-    #if user uses bike to get to UWSP
-    if session.bike != '0':
-        bike_category = db(db.category.category_name=='bike').select().first()
-        tab_nav.append(A("Bike Analysis",_href="#"+bike_category.category_name))
-        bike_question = db((db.question.category==bike_category.id) & (db.question.type_id != 0)).select()
-        bike_container = DIV(_id=bike_category.category_name)
-        bike_container.append(DIV(H3("Bike Analysis",_class='hlabel'),DIV(_class='divider')))
-        
-        for question in bike_question:
-            element = getQuestion(question)
-            bike_container.append(element)
-            question_id_list.append(question.id)
-        tab_container.append(bike_container)
-
-    #tab_container.insert(-1,tab_nav)
-    form.append(tab_container)
-
-    #submit button
-    element = INPUT(_type='submit',_value='Submit Analysis',_class='styledinput bigsubmit')
-    form.append(element)
-
-
-
-    #if form validates
-    if form.accepts(request):
-        for question_id in question_id_list:
-            answer_var = form.vars[str(question_id)]
-            db.response.update_or_insert(response_to=question_id,user=session.userid,answer=answer_var)
-        redirect('final')
-    elif form.errors:
-        response.flash = 'Please fill out every question'
-
-    return dict(form=form,question_id_list=question_id_list,car=session.car)
-
 def final():
     return dict()
 
@@ -580,7 +526,7 @@ def getQuestion(question):
         elif question.type_id == '2':
             element = DIV(H3(question.question_text, _class='hlabel'),INPUT(_type='text',_class='surveyinput styledinput', _name=question.id,requires=IS_NOT_EMPTY()),_class='eightcol surveyrow')
         elif question.type_id == '3':
-            element = DIV(H3(question.question_text, _class='float-left'),INPUT(_type='text',_class='styledinput timeinput float-right', _name=question.id,
+            element = DIV(H3(question.question_text, _class='float-left'),INPUT(_type='text',_class='styledinput timeinput highlight float-right', _name=question.id,
                 requires=IS_NOT_EMPTY(),_id="time-input-"+str(question.id)),_class='surveyrow')
         elif question.type_id == '4':
             element = DIV(H3(question.question_text,_class='float-left'),DIV(_id="minute-slider-"+str(question.id),_class="minute-slider float-left"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('minutes',_class='float-left'),_class='tab-surveyrow')
@@ -606,6 +552,7 @@ def getQuestion(question):
             for option in question.answers.split(','):
                 list_element.append(LI(DIV(INPUT(_type='checkbox', _class='checkbox-'+str(question.id),_value=option),H4(option,_class='label')),_class='error-border'))
             element.append(list_element)
+            element.append(INPUT(_type='hidden',_name=question.id,_id='check-list-hidden-'+str(question.id)))
         return element
 
 def survey_redirect():

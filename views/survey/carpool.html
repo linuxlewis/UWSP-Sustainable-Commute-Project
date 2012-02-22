@@ -20,6 +20,24 @@
             $(this).parent().parent().toggleClass('highlight-border');
             $(this).parent().parent().toggleClass('error-border');
         });
+
+        $("form").submit(function(){
+            var submitted = '';
+            $(".checkbox-{{=question}}:checked").each(function(){
+                submitted += $(this).val() + ',';
+            });
+            $("#check-list-hidden-{{=question}}").val(submitted);
+        });
+        $("#people-slider-{{=question}}").slider({max:12,
+                                    min:1,
+                                    slide:function(event, ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#people-slider-{{=question}}").slider("value"));
+                                    }
+                                });
+
  
         {{pass}}
     });
