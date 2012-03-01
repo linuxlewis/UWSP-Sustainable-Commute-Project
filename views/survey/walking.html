@@ -76,6 +76,10 @@ function addBikeMarker(location){
         infowindow.open(map, market);
     });
 
+    google.maps.event.addListener(infowindow, 'content_changed', function(){
+        alert('content changed');
+    });
+
     markers[currIndex] = market;
     currIndex++;
     currIndex = currIndex > 2 ? 0 : currIndex;
@@ -133,9 +137,9 @@ $('document').ready(function(){
     </div>
     <div class="row">
 
-    <div class="eightcol" style="margin:0 0 0 12em">
+    <div class="ninecol" style="margin:0 0 0 9em">
 
-    <h3>Click different locations where your walk could improve. Please write a brief explaination in the textarea that appears.</h3>
+    <h2 class='highlight'>Click different locations where your walk could improve. Please write a brief explaination in the textarea that appears.</h2>
 
     <ul id="walking-locations">
     </ul>

@@ -656,10 +656,11 @@ select.surveyinput{
     margin-top:25px;
 }
 select.tabinput{
-    font-size:1.5em;
+    /*font-size:1.5em;
     color:#312E25;
     margin-top:35px;
-    margin-left:30px;
+    margin-left:30px;*/
+    margin-top:15px;
 }
 ul.check-list{
     text-decoration:none;
@@ -669,7 +670,8 @@ ul.check-list li{
     padding:3px;
     padding-left:6px;
     height:30px;
-    width:170px;
+    min-width:170px;
+    width:auto;
     float:left;
     margin-right:5px;
     margin-top:5px;
@@ -706,9 +708,10 @@ ul.check-list li div input{
     margin:10px 0 15px 0;
     clear:both;
 }
-#parking-location-list{
-    list-style-type:decimal;
+#off-location-list, #parking-location-list{
+    list-style-type:none;
 }
+
 .tran_slider{
     width:500px;
     margin-top:38px;

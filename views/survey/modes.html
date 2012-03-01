@@ -64,11 +64,20 @@ $(document).ready(function(){
                                     $("#carpool").val(ui.value);
                                 }
                             });
+    $("#telecommute_slider").slider({ max: 7,
+                                min:0,
+                                range:"min",
+                                slide: function(event, ui) {
+                                    $("#telecommute").val(ui.value);
+                                }
+                            });
+
     $( "#bike" ).val($( "#bike_slider" ).slider( "value" ) );
     $( "#car" ).val($( "#car_slider" ).slider( "value" ) );
     $( "#bus" ).val($( "#bus_slider" ).slider( "value" ) );
     $( "#walk" ).val($( "#walk_slider" ).slider( "value" ) );
     $( "#carpool").val($("#carpool_slider").slider("value"));
+    $( "#telecommute").val($("#telecommute_slider").slider("value"));
 });
 </script>
 

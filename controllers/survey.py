@@ -30,13 +30,13 @@ def address():
     #create address form
     form=FORM(
     DIV(
-    DIV(H3('Address:',_class='hlabel'),INPUT(_name='addr',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow',_id='addr'),
+    DIV(H3('Address:',_class='hlabel'),INPUT(_name='addr',_class='styledinput surveyinput',requires=IS_NOT_EMPTY(),_id='addr'),_class='surveyrow'),
     DIV(H3('City:',_class='hlabel'),INPUT(_name='city',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(H3('State:',_class='hlabel'),INPUT(_name='state',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
     DIV(H3('Zip Code:',_class='hlabel'),INPUT(_name='zip',_maxlength='5',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),_class='top_address_form'),
     DIV(H3('Live in the dorms?',_class='hlabel'),INPUT(_name='dorm',_type='checkbox',_onclick='dormClick();',_id='dorm-check'),_class='surveyrow surveyhighlight'),
     DIV(H3('Dorm:',_class='hlabel'),SELECT('','Neale','Baldwin','Steiner','Burroughs','Watson','Smith','May-Roach','Hansen','Knutzen','Hyer','Pray-Sims','Thomson','Suites@201',_class='surveyinput',_id='dorm-select'),_class='surveyrow hidden-div',_id='dorm_form'),
-        DIV(INPUT(_type='submit',_value='next',_class='surveyinput'),_class='surveyrow'),
+        DIV(INPUT(_type='button',_value='next',_class='surveyinput',_onclick='form_submit()'),_class='surveyrow'),
     _formname='address_form',_id='address-form')
     
     #initilize form2
@@ -152,7 +152,10 @@ def modes():
     INPUT(_type='text',_name='carpool',_id='carpool',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Walk:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='walk_slider'),
-    INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'))
+    INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    DIV(H3('Telecommute:',_class='hlabel float-left'),
+    DIV(_class='tran_slider', _id='telecommute_slider'),
+    INPUT(_type='text',_name='telecommute',_id='telecommute',_class='day-input'),_class='surveyrow'))
     
     general_category = db(db.category.category_name=='route').select().first()
     general_question = db((db.question.category==general_category.id) & (db.question.type_id != 0)).select()
@@ -174,6 +177,7 @@ def modes():
         session.walk = form.vars.walk
         session.bus = form.vars.bus
         session.carpool = form.vars.carpool
+        session.telecommute = form.vars.telecommute
         
         #insert varibles into database
         question = db(db.question.question_text == 'bike-days').select().first()
@@ -190,6 +194,9 @@ def modes():
 
         question = db(db.question.question_text == 'carpool-days').select().first()
         db.response.update_or_insert(response_to=question.id,user=session.userid,answer=session.carpool)
+
+        question = db(db.question.question_text == 'telecommute-days').select().first()
+        db.response.update_or_insert(response_to=question.id,user=session.userid,answer=session.telecommute)
 
         #general questions
         for question_id in question_id_list:
@@ -257,6 +264,7 @@ def route():
     form2 = FORM(
            H2('Please drag the route to reflect the route you take to UWSP', _class='highlight'),
            INPUT(_type='submit',_value='Confirm',_name='map_confirm',_class='styledinput '),
+           INPUT(_type='button',_value='Reset',_class='styledinput',_onclick='clear_route(event);'),
            INPUT(_type='hidden',_name='route',_id='route', requires=IS_NOT_EMPTY()))
        
     #if the user confirmed their 'new' route
@@ -289,6 +297,8 @@ def walk():
     walk_category = db(db.category.category_name=='walk').select().first()
     walk_question =  db((db.question.category==walk_category.id) & (db.question.type_id != 0)).select()
     walk_container = DIV(_id=walk_category.category_name)
+
+    form.append(H2("Please evaluate your walking experience.",_class='highlight'))
 
     question_id_list = []
 
@@ -345,6 +355,8 @@ def bike():
     bike_question = db((db.question.category==bike_category.id) & (db.question.type_id != 0)).select()
     bike_container = DIV(_id=bike_category.category_name)
 
+    form.append(H2("Please evaluate your biking experience.",_class='highlight'))
+
     question_id_list = []
     
     for question in bike_question:
@@ -400,6 +412,8 @@ def car():
     car_question = db((db.question.category==car_category.id) & (db.question.type_id != 0)).select()
 
     car_container = DIV(_id=car_category.category_name)
+
+    form.append(H2("Please evaluate your driving experience.",_class='highlight'))
 
     question_id_list = []
 
@@ -462,6 +476,8 @@ def bus():
     bus_question = db((db.question.category==bus_category.id) & (db.question.type_id != 0)).select()
     bus_container = DIV(_id=bus_category.category_name)
 
+    form.append(H2('Please evaluate your bus experience',_class='highlight'))
+
     question_id_list = []
     
     for question in bus_question:
@@ -495,6 +511,8 @@ def carpool():
     carpool_container = DIV(_id=carpool_category.category_name)
 
     question_id_list = []
+
+    form.append(H2('Please evaluate your carpool experience',_class='highlight'))
     
     for question in carpool_question:
         element = getQuestion(question)
@@ -508,12 +526,42 @@ def carpool():
             answer_var = form.vars[str(question)]
             db.response.update_or_insert(response_to=question,user=session.userid,answer=answer_var)
             #routing
-            redirect('final')
+            redirect('carpool_parking')
                 
     elif form.errors:
         response.flash = 'Please answer all questions.'
         
     return dict(question_id_list=question_id_list,form=form)
+
+def carpool_parking():
+    parking_lots_path = URL('static', 'kml/lots_outline.kmz')
+    offcampus_path = URL('static', 'kml/off_campus_outline2.kmz')
+
+    #parking lot form
+    parking_form = FORM(
+        INPUT(_type='submit',_value='next',_class='surveyinput',_onclick='submitLot()'),
+        INPUT(_type='hidden',_name='campus_lots',_id='campus-hidden',requires=IS_NOT_EMPTY(error_message='Please select atleast one parking lot')),
+        INPUT(_type='hidden',_name='off_lots',_id='off-hidden')
+        ,_id='parking_form')
+
+    if parking_form.accepts(request):
+        parking_campus = parking_form.vars.campus_lots
+        parking_off = parking_form.vars.off_lots
+
+        #insert new parking lot response
+        question = db(db.question.question_text == 'carpool-parking-lots-campus').select().first()
+        db.response.update_or_insert(response_to=question.id,user=session.userid,answer=parking_campus)
+        question = db(db.question.question_text == 'carpool-parking-lots-off').select().first()
+        db.response.update_or_insert(response_to=question.id,user=session.userid,answer=parking_off)
+
+        redirect('final')
+
+    elif parking_form.errors:
+        response.flash = 'Please select atleast one parking location'
+
+    return dict(parking_form=parking_form, parking_lots_path=parking_lots_path,offcampus_path=offcampus_path)
+def telecommute():
+    return dict()
 
 def final():
     return dict()
@@ -534,7 +582,7 @@ def getQuestion(question):
             element = DIV(H3(question.question_text,_class='float-left'),DIV(_id="hour-slider-"+str(question.id),_class="hour-slider float-left"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('hours',_class='float-left'),_class='tab-surveyrow') 
         elif question.type_id == '6':
             element = DIV(H3(question.question_text,_class='float-left'),_class='surveyrow')
-            select = SELECT(_name=question.id,_id=question.id,_class="surveyinput float-left",requires=IS_NOT_EMPTY())
+            select = SELECT(_name=question.id,_id=question.id,_class="tabinput surveyinput float-left",requires=IS_NOT_EMPTY())
             select.append(" ")
             options = question.answers.split(',')
             for option in options:

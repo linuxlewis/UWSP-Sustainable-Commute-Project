@@ -71,4 +71,5 @@ db.define_table('question',
 db.define_table('response',
                 Field('response_to',db.question),
                 Field('user',db.response_user),
-                Field('answer','text'))
+                Field('answer','text'),
+                Field('timestamp','datetime', default = datetime.datetime.now()))

@@ -12,6 +12,7 @@ def setupdb():
     db.category.update_or_insert(category_name='walk')
     db.category.update_or_insert(category_name='data')
     db.category.update_or_insert(category_name='carpool')
+    db.category.update_or_insert(category_name='telecommute')
 
     #question types
 #0 = data
@@ -48,6 +49,10 @@ def setupdb():
 #parking locations
     category = db(db.category.category_name == 'parking').select().first()
 
+#telecommute questions
+    categoy = db(db.category.category_name == 'telecommute').select().first()
+    db.question.update_or_insert(question_text='telecommute-days',category=category.id,type_id=0)
+
 #transportation
     #bike questions
     category = db(db.category.category_name == 'bike').select().first()
@@ -58,10 +63,13 @@ def setupdb():
     db.question.update_or_insert(question_text='How long has it been since you road a bike?',category=category.id,type_id=9)
     db.question.update_or_insert(question_text='How long have you been bicycle commuting to campus?', category=category.id, type_id=1)
     db.question.update_or_insert(question_text='Which weather conditions are not suitable for bicycle commuting? Check all that apply.',category=category.id, type_id=10, answers='Sunny, Temperature, Overcast, Raining, Wet streets, Snowing, Snow on streets, Nighttime')
-    
+    db.question.update_or_insert(question_text='bike-spots', category=category.id, type_id=0)
+
     #carpool questions
     category = db(db.category.category_name == 'carpool').select().first()
     db.question.update_or_insert(question_text='carpool-days',category=category.id,type_id=0)
+    db.question.update_or_insert(question_text='carpool-parking-lots-campus', category=category.id, type_id=0)
+    db.question.update_or_insert(question_text='carpool-parking-lots-off', category=category.id, type_id=0)
     db.question.update_or_insert(question_text='How long have you been commuting by carpool?', category=category.id, type_id=1)
     db.question.update_or_insert(question_text='How many people, driver and passengers are on board when you arrive?',category=category.id,type_id=7)
 
@@ -81,13 +89,13 @@ def setupdb():
     db.question.update_or_insert(question_text='Fuel Type:',category=category.id,type_id=6,answers="gasoline, diesel, biodiesel, hybrid, electric")
     db.question.update_or_insert(question_text='How many people, driver and passengers are on board when you arrive?',category=category.id,type_id=7)
     db.question.update_or_insert(question_text='Do you use metered spaces?', category=category.id,answers='Yes, No, Sometimes',type_id=6)
-    db.question.update_or_insert(question_text='Do you purchase a parking permit?', category=category.id, answers='Yes, No, Sometimes',type_id=6)
+    db.question.update_or_insert(question_text='Do you purchase a parking permit?', category=category.id, answers='Yes, No',type_id=6)
 
     #bus questions
     category = db(db.category.category_name == 'bus').select().first()
     db.question.update_or_insert(question_text='bus-days',category=category.id,type_id=0)
     db.question.update_or_insert(question_text='How long have you commuted by bus?', category=category.id, type_id=1)
-    db.question.update_or_insert(question_text='What routes do you use?', category=category.id, type_id=10, answers='East Side/Crossroads,North Point, Rice/Dixon, Whiting/Westside, Campus - East Side,  Campus - Downtown, Campus - Evergreen, Campus Doolittle Dr., Late Night East, Late Night North')
+    db.question.update_or_insert(question_text='What bus routes do you use?', category=category.id, type_id=10, answers='East Side/Crossroads,North Point, Rice/Dixon, Whiting/Westside, Campus - East Side,  Campus - Downtown, Campus - Evergreen, Campus Doolittle Dr., Late Night East, Late Night North')
     db.question.update_or_insert(question_text='Do you have any challenges riding the bus?', category=category.id, type_id=1)
 
     #walking questions

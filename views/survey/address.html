@@ -1,19 +1,30 @@
 {{extend 'layout_new.html'}}
-{{block content}}
+{{block head}}
 <script type="text/javascript">
 function dormClick(){
     $(".top_address_form").toggleClass("hidden-div","2");
     $("#dorm_form").toggleClass("hidden-div","2");
 }
-$('#address-form').submit(function(){
+function form_submit(){
    //dorm checked
-   alert('submit');
    if($('#dorm-check').is(':checked')){
-       $('#addr').val($('#dorm-select').val()); 
-       alert($('#addr').val());
+       var dorm = $('#dorm-select').val(); 
+       if((dorm == 'Neale') || (dorm == 'Baldwin') || (dorm == 'Hansen') || (dorm == 'Steiner') || (dorm == 'Burroughs') ||
+           (dorm == 'Knutzen') || (dorm == 'Watson') || (dorm == 'Thomson')){
+            $('#addr').val('433 Isadore Street');
+       }
+       else if((dorm == 'Smith') || (dorm == 'Pray-Sims') || (dorm == 'May-Roach') || (dorm == 'Suites@201')){
+            $('#addr').val('201 Reserve St');
+       }
+       else{
+            $('#addr').val('1319 Fremont Street'); 
+       }
    }
-});
+   $('#address-form').submit();
+}
 </script>
+{{end}}
+{{block content}}
 <div style="text-align:center;">
 <h1>Where do you <span class="highlight">live?</span></h1>
 <div class="divider"></div>
