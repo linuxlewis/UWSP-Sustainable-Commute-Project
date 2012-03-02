@@ -48,6 +48,17 @@ function show_address(){
       }
     });
 }
+function overlay_image(){
+    var imageBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(44.522871,-89.57723),
+        new google.maps.LatLng(44.535399,-89.564216));
+    var url = "http://www.uwspcommute.appspot.com/uwspcommute/static/images/campus_overview.jpg";
+    var imagemap = new google.maps.GroundOverlay(url,imageBounds);
+    google.maps.event.addListener(imagemap, 'click', function(event){
+        addBikeMarker(event.latLng);
+    });
+    imagemap.setMap(map);
+}
 function clearRoute(){
     if (currentLayer != null){
         currentLayer.setMap(null);
@@ -101,6 +112,7 @@ function submitBikeMarker(){
 $('document').ready(function(){
     initialize_map();
     show_address();
+    overlay_image();
  });
     </script>
     <style>

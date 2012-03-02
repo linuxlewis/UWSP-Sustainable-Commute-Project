@@ -64,27 +64,28 @@ function addBikeMarker(location){
         map: map});
     map.setCenter(location);
 
-    var domform = '<div><h2 style="color:black;">Whats wrong here?</h2><textarea cols="50" row="10" class="walking-feedback"></textarea></div>';
-
-    var infowindow = new google.maps.InfoWindow({
-        content: domform
-    });
-
-    infowindow.open(map, market);
-
-    google.maps.event.addListener(market, 'click', function(){
-        infowindow.open(map, market);
-    });
-
-    google.maps.event.addListener(infowindow, 'content_changed', function(){
-        alert('content changed');
-    });
 
     markers[currIndex] = market;
+    var infowindow = new google.maps.InfoWindow();
+    infowindow.id = currIndex;
     currIndex++;
     currIndex = currIndex > 2 ? 0 : currIndex;
+
+    var domform = '<div><h2 style="color:black;">Whats wrong here?</h2><textarea id="'+infowindow.id+'" cols="50" row="10" class="walking-feedback"></textarea><button onclick="saveWalk('+infowindow.id+')">save</button></div>';
+
+    infowindow.content = domform;
+    infowindow.open(map, market);
+
+    google.maps.event.addListener(market, 'click', function(e){
+        infowindow.content = '<div><h2 style="color:black;">Whats wrong here?</h2><textarea id="'+infowindow.id+'" cols="50" row="10" class="walking-feedback">'+markers[infowindow.id].problem+'</textarea><button onclick="saveWalk('+infowindow.id+')">save</button></div>'         
+        infowindow.open(map, market);
+    });
     
     refreshBikeMarkerUI();
+}
+function saveWalk(id){
+    markers[id].problem = $('#'+id).val();
+    alert("saved");
 }
 function clearBikeMarker(){
     $("#bike-rack-locations").empty();
@@ -107,11 +108,11 @@ function submitBikeMarker(){
     var submitedLocations = '';
     for (var i = 0; i < markers.length; i++){
         if(markers[i] != null){
-            submitedLocations += markers[i].position+"|";
+            submitedLocations += markers[i].position+" "+ markers[i].problem+"|";
         }
     }
-    $("#bike-rack-hidden").val(submitedLocations);
-    $("#bike-form").submit();
+    $("#walk-spots").val(submitedLocations);
+    $("#walking-form").submit();
 }
     
 $('document').ready(function(){

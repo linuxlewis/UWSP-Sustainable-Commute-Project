@@ -323,9 +323,9 @@ def walk():
 
 def walking():
     #space for walking map
-    form = FORM()
+    form = FORM(_id="walking-form")
     form.append(INPUT(_type='hidden',_name='walk',_id='walk-spots'))
-    form.append(DIV(INPUT(_type='submit',_name='next',_value='next',_class='surveyinput'),_class='surveyrow'))
+    form.append(DIV(INPUT(_type='button',_name='next',_value='next',_class='surveyinput',_onclick='submitBikeMarker()'),_class='surveyrow'))
 
     if form.accepts(request):
         #save information
