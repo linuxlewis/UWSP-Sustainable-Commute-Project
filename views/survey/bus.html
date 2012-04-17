@@ -28,6 +28,18 @@
             });
             $("#check-list-hidden-{{=question}}").val(submitted);
         });
+
+                $("#year-slider-{{=question}}").slider({max:20,
+                                    slide:function(event,ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#year-slider-{{=question}}").slider("value"));
+
+                                    }
+                                });
+
+
  
         {{pass}}
     });
@@ -36,7 +48,7 @@
 {{end}}
 
 {{block content}}
-<h1 style="text-align:center;">Riding the bus to <span class="highlight">UWSP</span></h1>
+<h1 style="text-align:center;">Your bus<span class="highlight"> ride</span></h1>
 <div class="divider"></div>
    <div class="ninecol" style="margin:0 12em 0 12em;">
     {{=form}}

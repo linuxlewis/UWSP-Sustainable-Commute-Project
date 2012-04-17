@@ -13,7 +13,7 @@ function initialize_map(){
           mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
           navigationControl: true,
           navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          mapTypeId: google.maps.MapTypeId.HYBRID,
           draggableCursor:'crosshair'
         }   
     map = new google.maps.Map(document.getElementById("g_map"), myOptions);
@@ -29,7 +29,7 @@ function show_address(){
             map.setCenter(results[0].geometry.location);
             map.setZoom(14);
             
-            var infowindow = new google.maps.InfoWindow({
+           /* var infowindow = new google.maps.InfoWindow({
             content: "<strong>You are here.</strong>"
             });
         
@@ -42,7 +42,7 @@ function show_address(){
         
         google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
-        });
+        });*/
       } else {
       
       }
@@ -112,7 +112,7 @@ function submitBikeMarker(){
 $('document').ready(function(){
     initialize_map();
     show_address();
-    overlay_image();
+    //overlay_image();
  });
     </script>
     <style>

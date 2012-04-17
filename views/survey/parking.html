@@ -52,7 +52,7 @@ function clearRoute(){
 function show_parking(){
     clearRoute();
     var url = 'http://uwspcommute.appspot.com{{=parking_lots_path}}';
-    currentLayer = new google.maps.KmlLayer(url, {map: map});
+    currentLayer = new google.maps.KmlLayer(url, {map: map, suppressInfoWindows:true});
     google.maps.event.addListener(currentLayer, 'click', function(kmlEvent){
         addLot(kmlEvent.featureData.name);
     });
@@ -60,7 +60,7 @@ function show_parking(){
 function show_offcampus(){
     clearRoute();
     var url = 'http://uwspcommute.appspot.com{{=offcampus_path}}';
-    currentLayer = new google.maps.KmlLayer(url, {map: map});
+    currentLayer = new google.maps.KmlLayer(url, {map: map, suppressInfoWindows:true});
     google.maps.event.addListener(currentLayer, 'click', function(kmlEvent){
        addOffLot(kmlEvent.featureData.name);
         
@@ -181,8 +181,8 @@ $('document').ready(function(){
             </div>
     </div>
     <div class="sixcol last">
-    <button class="styledinput" type="button" onclick="offcampusClick();">Off Campus Lots</button>
-    <h3>Off-Campus Locations</h3>
+    <button class="styledinput" type="button" onclick="offcampusClick();">Off Campus</button>
+    <h3>Off-Campus Neighborhoods</h3>
     <ul id="off-location-list">
     </ul>
     <button type="button" class="styledinput" onclick="clearOff();">clear list</button>

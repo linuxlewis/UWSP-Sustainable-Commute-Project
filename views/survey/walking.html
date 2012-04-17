@@ -88,13 +88,13 @@ function saveWalk(id){
     alert("saved");
 }
 function clearBikeMarker(){
-    $("#bike-rack-locations").empty();
+    $("#walking-locations").empty();
     for(var i = 0; i < markers.length; i++){
         markers[i].setMap(null);
         markers[i] = null;
     }
 }
-function clearBikeClick(e){
+function clearWalkClick(e){
     clearBikeMarker();
 }
 function refreshBikeMarkerUI(){

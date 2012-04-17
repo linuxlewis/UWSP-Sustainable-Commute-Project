@@ -50,6 +50,7 @@ db.define_table('response_user',
                     Field('city'),
                     Field('zip'),
                     Field('state'))
+db.response_user.email.requires = IS_NOT_IN_DB(db, 'response_user.email', error_message='Email already used!')
 db.define_table('uwsp_user',
                 Field('user',db.response_user),
                 Field('uwsp_id'),
@@ -66,7 +67,9 @@ db.define_table('question',
                 Field('question_text'),
                 Field('type_id'),
                 Field('answers'),
-                Field('category',db.category))
+                Field('category',db.category),
+                Field('question_order'))
+#, 'datetime', default = datetime.datetime.now()))
 #inialize response table
 db.define_table('response',
                 Field('response_to',db.question),

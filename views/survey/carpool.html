@@ -37,6 +37,16 @@
                                         $("#slider-input-{{=question}}").val($("#people-slider-{{=question}}").slider("value"));
                                     }
                                 });
+        $("#year-slider-{{=question}}").slider({max:20,
+                                    slide:function(event,ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#year-slider-{{=question}}").slider("value"));
+
+                                    }
+                                });
+
 
  
         {{pass}}

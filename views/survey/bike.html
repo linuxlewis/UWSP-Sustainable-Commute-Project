@@ -47,6 +47,17 @@
                                     }
                                 });
 
+        $("#year-slider-{{=question}}").slider({max:20,
+                                    slide:function(event,ui){
+                                        $("#slider-input-{{=question}}").val(ui.value);
+                                    },
+                                    create:function(event,ui){
+                                        $("#slider-input-{{=question}}").val($("#year-slider-{{=question}}").slider("value"));
+
+                                    }
+                                });
+
+
         {{pass}}
     });
 
@@ -54,7 +65,7 @@
 {{end}}
 
 {{block content}}
-<h1 style="text-align:center;">Biking to <span class="highlight">UWSP</span></h1>
+<h1 style="text-align:center;">Your bike<span class="highlight"> commute</span></h1>
 <div class="divider"></div>
    <div class="ninecol" style="margin:0 12em 0 12em;">
     {{=form}}

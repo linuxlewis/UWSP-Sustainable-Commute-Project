@@ -6,10 +6,10 @@ def index():
     #uwsp form
     form=FORM(DIV(H3('UWSP ID:',_class='hlabel'),
     INPUT(_name='uwspid',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(LABEL('UWSP Status:',_class='hlabel',_for='uwstatus'),SELECT(' ','Student','Faculty','Staff',_name='uwstatus',_value='Student',_class='surveyinput',_id='uwstatus',requires=IS_NOT_EMPTY('select a value')),_class='surveyrow'),
+    DIV(LABEL('Department or office affiliation:',_class='hlabel',_for='uwdept'),
+        SELECT(' ','Aber Suzuki Center','Academic Affairs','Accounting','Administration','Alumni Affairs','Anthropology','Athletics','Art and Design','Astronomy and Physics','Biology','Business and Economics','Chemistry','Continuing Education','Communication','Communicative Disorders','Computing & New Media Technologies','Computer Information Systems','Dance and Theatre','Education','English','Fisheries and Water Resources','Foreign Languages','Forestry','Geography and Geology','Health, Exercise Science and Athletics','Health Care Professions','Health Promotion & Human Development','Health Sciences','History','Human Dimensions of Natural Resources', 'Interior Architecture','Information Technology','Library','Maintenance','Mathematical Sciences','Military Science (R.O.T.C.)','Music','Paper Science and Engineering','Personnel Services','Philsophy','Physics and Astronomy','Physical Education & Athletic Training','Political Science','Psychology','Religious Studies','Reserve Officers Training Corps','Resource Management','Schmeeckle Reserve','Sociology & Social Work','Soil and Waste Resources','Student Affairs','Student Services','Theatre and Dance','University Relations','Water Resources','Web and Digital Media Development','Wildlife','Wildlife Ecology','Womens Studies',_name='uwdept',_class='surveyinput',_id='uwdept',requires=IS_NOT_EMPTY('select a value')),_class='surveyrow'),
+    DIV(LABEL('UWSP Status:',_class='hlabel',_for='uwstatus'),SELECT(' ','Undergraduate','Graduate','Continuing Education','Faculty','Staff','Administration',_name='uwstatus',_value='Student',_class='surveyinput',_id='uwstatus',requires=IS_NOT_EMPTY('select a value')),_class='surveyrow'),
     DIV(LABEL('Years at UWSP:',_class='hlabel',_for='uwyears'),INPUT(_name='uwyears',_class='styledinput surveyinput',_id='uwyears',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(LABEL('Dept. of Work/Study:',_class='hlabel',_for='uwdept'),
-        SELECT(' ','Administration','Anthropology','Art and Design','Astronomy and Physics','Biology','Business and Economics','Chemistry','Communication','Communicative Disorders','Computer Information Systems','Dance and Theatre','Education','English','Foreign Languages','Forestry','Geography and Geology','Health, Exercise Science and Athletics','Health Promotion & Human Development','Health Sciences','History', 'Interior Architecture','Information Technology','Library','Maintenance','Mathematical Sciences','Music','Paper Science','Philsophy','Physics and Astronomy','Political Science','Psychology','Religious Studies','Reserve Officers Training Corps','Resource Management','Sociology & Social Work','Soil and Waste Resources','Theatre and Dance','Water Resources','Web and Digital Media Development','Wildlife','Womens Studies',_name='uwdept',_class='surveyinput',requires=IS_NOT_EMPTY('select a value')),_class='surveyrow'),
     DIV(INPUT(_type='submit',_value='start',_class='surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),_formname='form1')
     
     
@@ -30,12 +30,13 @@ def address():
     #create address form
     form=FORM(
     DIV(
-    DIV(H3('Address:',_class='hlabel'),INPUT(_name='addr',_class='styledinput surveyinput',requires=IS_NOT_EMPTY(),_id='addr'),_class='surveyrow'),
-    DIV(H3('City:',_class='hlabel'),INPUT(_name='city',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(H3('State:',_class='hlabel'),INPUT(_name='state',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-    DIV(H3('Zip Code:',_class='hlabel'),INPUT(_name='zip',_maxlength='5',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),_class='top_address_form'),
-    DIV(H3('Live in the dorms?',_class='hlabel'),INPUT(_name='dorm',_type='checkbox',_onclick='dormClick();',_id='dorm-check'),_class='surveyrow surveyhighlight'),
-    DIV(H3('Dorm:',_class='hlabel'),SELECT('','Neale','Baldwin','Steiner','Burroughs','Watson','Smith','May-Roach','Hansen','Knutzen','Hyer','Pray-Sims','Thomson','Suites@201',_class='surveyinput',_id='dorm-select'),_class='surveyrow hidden-div',_id='dorm_form'),
+    DIV(H3('Live in the residence halls?',_class='hlabel'),INPUT(_name='dorm',_type='checkbox',_onclick='dormClick();',_id='dorm-check'),_class='surveyrow surveyhighlight'),
+    DIV(H3('Local Address:',_class='hlabel'),INPUT(_name='addr',_class='styledinput surveyinput',requires=IS_NOT_EMPTY(),_id='addr'),_class='surveyrow'),
+    DIV(H3('City:',_class='hlabel'),INPUT(_name='city',_class='styledinput surveyinput',requires=IS_NOT_EMPTY(),_id='city'),_class='surveyrow'),
+    DIV(H3('State:',_class='hlabel'),INPUT(_name='state',_class='styledinput surveyinput',requires=IS_NOT_EMPTY(),_id='state'),_class='surveyrow'),
+    DIV(H3('Zip Code:',_class='hlabel'),INPUT(_name='zip',_maxlength='5',_class='styledinput surveyinput',requires= [IS_NOT_EMPTY(),IS_MATCH('^\d{5}$',error_message='5 digit zip code')],_id='zip'),_class='surveyrow'),_class='top_address_form'),
+    
+    DIV(H3('Residence Hall:',_class='hlabel'),SELECT('','Neale','Baldwin','Steiner','Burroughs','Watson','Smith','May-Roach','Hansen','Knutzen','Hyer','Pray-Sims','Thomson','Suites@201',_class='surveyinput',_id='dorm-select'),_class='surveyrow hidden-div',_id='dorm_form'),
         DIV(INPUT(_type='button',_value='next',_class='surveyinput',_onclick='form_submit()'),_class='surveyrow'),
     _formname='address_form',_id='address-form')
     
@@ -78,9 +79,9 @@ def address():
                 #add additional information form
                 response.flash = 'UWSP ID: ' + session.uwspid + ' not found! Fill out additional name information.'
                 form2 = DIV(
-                DIV(H3('First Name:',_class='hlabel'),INPUT(_name='fname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-                DIV(H3('Last Name:',_class='hlabel'),INPUT(_name='lname',_class='styledinput surveyinput',requires=IS_NOT_EMPTY()),_class='surveyrow'),
-                DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',requires=IS_EMAIL()),_class='surveyrow'))
+                DIV(H3('First Name:',_class='hlabel'),INPUT(_name='fname',_class='styledinput surveyinput'),_class='surveyrow'),
+                DIV(H3('Last Name:',_class='hlabel'),INPUT(_name='lname',_class='styledinput surveyinput'),_class='surveyrow'),
+                DIV(H3('Email:',_class='hlabel'),INPUT(_name='email',_class='styledinput surveyinput',requires= [ IS_EMAIL(), IS_MATCH('^\w*@uwsp.edu$', error_message='Must be UWSP email')]),_class='surveyrow'))
                 session.isUwspUser = 0
                 form.insert(0,form2)
             
@@ -92,9 +93,11 @@ def address():
         session.zip = form.vars.zip
 
         #if additional form was added
-        if (form.vars.fname != None) & (form.vars.lname != None) & (form.vars.email != None):
-            session.fname = form.vars.fname
-            session.lname = form.vars.lname
+        if (form.vars.email != None):
+            if (form.vars.fname != None): 
+                session.fname = form.vars.fname
+            if (form.vars.lname != None):
+                session.lname = form.vars.lname
             session.email = form.vars.email
         
         #if response user exists
@@ -118,6 +121,7 @@ def address():
         #if user entered uwspid
         if session.uwspid:
             result = db(db.response_user.email == session.email).select().first()
+            #TODO change logic for API calls
             uwspresult = db(db.uwsp_user.user == result.id).select().first()
             #if uwsp user already exists
             if uwspresult:
@@ -140,19 +144,19 @@ def modes():
     H2("How many days a week do you use each of these methods for your campus commute?",_class='highlight'),
     DIV(H3('Bike:',_class='hlabel float-left'),
     DIV(_class='tran_slider',_id='bike_slider'),
-    INPUT(_type='text',_name='bike',_id='bike',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    INPUT(_type='text',_name='bike',_id='bike',_class='day-input'),H3('days',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Bus:',_class='hlabel float-left'),
     DIV(_class='tran_slider',_id='bus_slider'),
-    INPUT(_type='text',_name='bus',_id='bus',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    INPUT(_type='text',_name='bus',_id='bus',_class='day-input'),H3('days',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Car:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='car_slider'),
-    INPUT(_type='text',_name='car',_id='car',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    INPUT(_type='text',_name='car',_id='car',_class='day-input'),H3('days',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Carpool:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='carpool_slider'),
-    INPUT(_type='text',_name='carpool',_id='carpool',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    INPUT(_type='text',_name='carpool',_id='carpool',_class='day-input'),H3('days',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Walk:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='walk_slider'),
-    INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('day(s)',_class='hlabel'),_class='surveyrow'),
+    INPUT(_type='text',_name='walk',_id='walk',_class='day-input'),H3('days',_class='hlabel'),_class='surveyrow'),
     DIV(H3('Telecommute:',_class='hlabel float-left'),
     DIV(_class='tran_slider', _id='telecommute_slider'),
     INPUT(_type='text',_name='telecommute',_id='telecommute',_class='day-input'),_class='surveyrow'))
@@ -213,52 +217,52 @@ def route():
 #query for user route
 #return route path
     #if user is a uwspuser
-    if session.isUwspUser == 1:
+    #if session.isUwspUser == 1:
         #set url for KML
-        static_route = 'kml/2010/' + session.uwspid +'.kmz'
-        kml_route = URL('static',static_route)
-        session.viewRoute = 1
-        session.setRoute = 0
-    else:
+    #    static_route = 'kml/2010/' + session.uwspid +'.kmz'
+    #    kml_route = URL('static',static_route)
+    #    session.viewRoute = 1
+    #    session.setRoute = 0
+    #else:
         #set varibles for generated route
-        kml_route = '1'
-        session.viewRoute = 0
-        session.setRoute = 0
+    kml_route = '1'
+    session.viewRoute = 0
+    session.setRoute = 1
 
     #create confirmation form
-    form = FORM(
-    H2('Is this your route to UWSP?', _class='highlight'),
-    INPUT(_type='submit',_value='Yes',_name='map_accurate',_class='styledinput'),
-    INPUT(_type='submit',_value='No',_name='map_accurate',_class='styledinput'))
+    #form = FORM(
+    #H2('Is this your route to UWSP?', _class='highlight'),
+    #INPUT(_type='submit',_value='Yes',_name='map_accurate',_class='styledinput'),
+    #INPUT(_type='submit',_value='No',_name='map_accurate',_class='styledinput'))
     
     #if confirmation form validates
-    if form.accepts(request):
+    #if form.accepts(request):
         #if the user confirmmed the route
-        if request.vars.map_accurate == 'Yes':
+        #if request.vars.map_accurate == 'Yes':
             #delete uneeded session vars
-            del session.setRoute
-            del session.viewRoute
+        #    del session.setRoute
+        #    del session.viewRoute
             #insert route into response table
-            question = db(db.question.question_text == 'route to uwsp').select().first()
-            response_user = db(db.response_user.email == session.email).select().first()
-            db.response.update_or_insert(response_to=question.id,user=response_user.id,answer='true')
+        #    question = db(db.question.question_text == 'route to uwsp').select().first()
+        #    response_user = db(db.response_user.email == session.email).select().first()
+        #    db.response.update_or_insert(response_to=question.id,user=response_user.id,answer='true')
+    
+        # if session.walk != '0':
+            #    redirect('walk')
+         #   elif session.bike != '0':
+            #    redirect('bike')
+          #  elif session.car != '0':
+            #    redirect('car')
+           # elif session.bus != '0':
+            #    redirect('bus')
+            #elif session.carpool != '0':
+             #   redirect('carpool')
 
-            if session.walk != '0':
-                redirect('walk')
-            elif session.bike != '0':
-                redirect('bike')
-            elif session.car != '0':
-                redirect('car')
-            elif session.bus != '0':
-                redirect('bus')
-            elif session.carpool != '0':
-                redirect('carpool')
-
-        else:
+        #else:
             #set session vars to create new route
-            response.flash = 'Please edit and confirm your route'
-            del session.viewRoute
-            session.setRoute = 1
+    response.flash = 'Please edit and confirm your route'
+        #    del session.viewRoute
+        #    session.setRoute = 1
 
     #create drag route form
     form2 = FORM(
@@ -288,7 +292,7 @@ def route():
             elif session.carpool != '0':
                 redirect('carpool')
  
-    return dict(kmlroute=kml_route,form=form,form2=form2)
+    return dict(kmlroute=kml_route,form2=form2)
 
 def walk():
     #space for walk questions
@@ -409,7 +413,7 @@ def car():
     form = FORM()
 
     car_category = db(db.category.category_name=='car').select().first()
-    car_question = db((db.question.category==car_category.id) & (db.question.type_id != 0)).select()
+    car_question = (db((db.question.category==car_category.id) & (db.question.type_id != 0)).select()).sort(lambda row:row.question_order)
 
     car_container = DIV(_id=car_category.category_name)
 
@@ -591,9 +595,9 @@ def getQuestion(question):
         elif question.type_id == '7':
             element = DIV(H3(question.question_text),DIV(_id="people-slider-"+str(question.id),_class="people-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('people',_class='float-left'),_class='tab-surveyrow') 
         elif question.type_id == '8':
-            element = DIV(H3(question.question_text),DIV(_id="week-slider-"+str(question.id),_class="week-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('day(s)',_class='float-left'),_class='tab-surveyrow') 
+            element = DIV(H3(question.question_text),DIV(_id="week-slider-"+str(question.id),_class="week-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('days',_class='float-left'),_class='tab-surveyrow') 
         elif question.type_id == '9':
-            element = DIV(H3(question.question_text),DIV(_id="month-slider-"+str(question.id),_class="month-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('day(s)',_class='float-left'),_class='tab-surveyrow')  
+            element = DIV(H3(question.question_text),DIV(_id="month-slider-"+str(question.id),_class="month-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('days',_class='float-left'),_class='tab-surveyrow')  
         elif question.type_id == '10':
             element = DIV(H3(question.question_text, _class='float-left'),_class='tab-surveyrow')
             list_element = UL(_id=question.id, _class='check-list')
@@ -601,6 +605,8 @@ def getQuestion(question):
                 list_element.append(LI(DIV(INPUT(_type='checkbox', _class='checkbox-'+str(question.id),_value=option),H4(option,_class='label')),_class='error-border'))
             element.append(list_element)
             element.append(INPUT(_type='hidden',_name=question.id,_id='check-list-hidden-'+str(question.id)))
+        elif question.type_id == '11':
+            element = DIV(H3(question.question_text),DIV(_id="year-slider-"+str(question.id),_class="year-slider"),INPUT(_type="text",_name=question.id,_id="slider-input-"+str(question.id),_class="minute-input"),H3('years',_class='float-left'),_class='tab-surveyrow')  
         return element
 
 def survey_redirect():

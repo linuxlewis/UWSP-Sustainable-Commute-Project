@@ -1,4 +1,17 @@
 {{extend 'layout_new.html'}}
+{{block head}}
+<!--[if lte IE 9]>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js"></script>
+<script type="text/javascript" src="/uwspcommute/static/js/ie_fix.js"></script>
+<script type="text/javascript">
+    $().ready(function(){
+           new IEDropdown('uwdept'); 
+           new IEDropdown('uwstatus');
+           alert('bunghole');
+      });
+</script>
+<![endif]-->
+{{end}}
 {{block content}}
 <div style="text-align:center;">
 <h1>WHAT IS YOUR <span class="highlight">IMPACT?</span></h1>
@@ -10,7 +23,7 @@
     <p>UWSP SCP does not sell, rent, swap or otherwise disclose any individual information you provide in this survey with any other entity. Addresses are only used to estimate commute routes and distances. To protect individual privacy location and commuter experience information will be used in aggregate for analysis and publication of UWSP commuter activity.</p>
 
 </div>
-<div class="sixcol" style="margin:0 15em 0 18em;">
+<div class="sevencol" style="margin:0 15em 0 18em;">
 {{=form}}
 <div class="divider" style="margin:1em 0 3em 0"></div>
 </div>

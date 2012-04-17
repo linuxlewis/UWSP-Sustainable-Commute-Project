@@ -177,6 +177,7 @@ textarea.styledinput{
     width:1000px;
     font-family:'BevanRegular';
     font-size: 56px;
+    font-weight:normal;
 }
 
 #content p {
@@ -688,6 +689,7 @@ ul.check-list li div input{
     height:75px;
     clear:both;
     margin:10px 0 15px 0;
+    /*overflow:hidden;*/
 }
 .checkbox-row{
     height:500px;
@@ -756,6 +758,11 @@ input.minute-input{
     margin-top:40px;
 }
 .month-slider{
+    width:500px;
+    float:left;
+    margin-top:40px;
+}
+.year-slider{
     width:500px;
     float:left;
     margin-top:40px;
