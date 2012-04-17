@@ -164,6 +164,7 @@ textarea.styledinput{
     z-index:-1;
     margin-top:40px;
     -webkit-box-shadow: 0px -1px 2px 0px #312c27;
+    /*-webkit-box-shadow: 0px 2px 0px 2px #312c27;*/
     -moz-box-shadow: 0px -1px 2px 0px #312c27;
     box-shadow: 0px -1px 2px 0px #312c27;
 
@@ -872,4 +873,6 @@ input.minute-input{
     border-style:solid;
     border-width:3px;
 }
-
+#impact-journey{
+    margin:0 auto;
+}
